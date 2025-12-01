@@ -1,0 +1,113 @@
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f7f7f7;
+  padding: 20px;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 450px;
+  background: white;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.register-card h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #555;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+.form-control:focus {
+  border-color: #28a745; /* Green for register focus */
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.invalid-feedback {
+  color: #dc3545;
+  font-size: 0.875em;
+  margin-top: 4px;
+}
+
+.btn-register {
+  width: 100%;
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.btn-register:hover:not([disabled]) {
+  background-color: #218838;
+}
+
+.btn-register:disabled {
+  background-color: #94d3a2;
+  cursor: not-allowed;
+}
+
+.spinner-border-sm {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  vertical-align: text-bottom;
+  border: 0.15em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spinner-border 0.75s linear infinite;
+  margin-right: 5px;
+}
+
+@keyframes spinner-border {
+  to { transform: rotate(360deg); }
+}
+
+.footer-text {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.9em;
+  color: #777;
+}
+
+.footer-text a {
+  color: #007bff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.footer-text a:hover {
+  text-decoration: underline;
+}
