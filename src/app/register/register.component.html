@@ -1,0 +1,78 @@
+<div class="register-container">
+  <div class="register-card">
+    <h2>Hesap Oluştur</h2>
+    
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      
+      <div class="form-group">
+        <label for="username">Kullanıcı Adı</label>
+        <input 
+          id="username" 
+          type="text" 
+          formControlName="username" 
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['username'].errors }" 
+        />
+        <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
+          <div *ngIf="f['username'].errors['required']">Kullanıcı Adı zorunludur.</div>
+          <div *ngIf="f['username'].errors['minlength']">En az 3 karakter olmalıdır.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">E-posta</label>
+        <input 
+          id="email" 
+          type="email" 
+          formControlName="email" 
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" 
+        />
+        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+          <div *ngIf="f['email'].errors['required']">E-posta zorunludur.</div>
+          <div *ngIf="f['email'].errors['email']">Geçerli bir e-posta adresi giriniz.</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Şifre</label>
+        <input 
+          id="password" 
+          type="password" 
+          formControlName="password" 
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+        />
+        <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+          <div *ngIf="f['password'].errors['required']">Şifre zorunludur.</div>
+          <div *ngIf="f['password'].errors['minlength']">Şifre en az 6 karakter olmalıdır.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Şifre Tekrar</label>
+        <input 
+          id="confirmPassword" 
+          type="password" 
+          formControlName="confirmPassword" 
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }"
+        />
+        <div *ngIf="submitted && f['confirmPassword'].errors" class="invalid-feedback">
+          <div *ngIf="f['confirmPassword'].errors['required']">Şifre tekrarı zorunludur.</div>
+          <div *ngIf="f['confirmPassword'].errors['matching']">Şifreler eşleşmiyor.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button [disabled]="loading" class="btn-register">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+          Kayıt Ol
+        </button>
+      </div>
+
+    </form>
+    
+    <p class="footer-text">Zaten hesabınız var mı? <a routerLink="/login">Giriş Yapın</a></p>
+  </div>
+</div>
