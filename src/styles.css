@@ -1,1 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
+*, html, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  height: 100vh;
+  /* Centering logic for the router outlet content */
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to bottom right, #ff966d, #fa538d, #89379c);
+  overflow: hidden; /* Prevent scrollbars from decorative elements if needed */
+}
