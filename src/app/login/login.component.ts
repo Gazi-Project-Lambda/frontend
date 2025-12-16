@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { CommonModule } from '@angular/common'; 
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +24,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -46,9 +49,25 @@ export class LoginComponent implements OnInit {
     
     this.loading = true;
     // Simulate Login
+    const username = this.loginForm.value.username;
+    const password = this.loginForm.value.password;
     setTimeout(() => {
         this.loading = false;
-        console.log('Login logic here');
+
+        if (username === 'admin' && password === '123456') {
+            
+            // Başarılı Giriş
+            this.authService.login();
+            this.router.navigate(['/notes']);
+            this.errorMessage = ''; // Hata mesajını temizle
+
+        } else {
+            // Başarısız Giriş
+            this.errorMessage = 'Hatalı Kullanıcı Adı veya Şifre.';
+            this.loginForm.reset(); // Formu sıfırla
+            this.submitted = false;
+        }
+        
     }, 1000);
   }
 }
