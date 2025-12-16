@@ -1,78 +1,64 @@
-<div class="register-container">
-  <div class="register-card">
-    <h2>Hesap Oluştur</h2>
+<div class="container">
+  <!-- Left Side Design -->
+  <div class="design">
+    <div class="pill-1 rotate-45"></div>
+    <div class="pill-2 rotate-45"></div>
+    <div class="pill-3 rotate-45"></div>
+    <div class="pill-4 rotate-45"></div>
+  </div>
+
+  <!-- Right Side Register Form -->
+  <div class="login"> <!-- Keeping class 'login' for shared CSS styles -->
+    <h3 class="title">Hesap Oluştur</h3>
     
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       
-      <div class="form-group">
-        <label for="username">Kullanıcı Adı</label>
-        <input 
-          id="username" 
-          type="text" 
-          formControlName="username" 
-          class="form-control"
-          [ngClass]="{ 'is-invalid': submitted && f['username'].errors }" 
-        />
-        <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
-          <div *ngIf="f['username'].errors['required']">Kullanıcı Adı zorunludur.</div>
-          <div *ngIf="f['username'].errors['minlength']">En az 3 karakter olmalıdır.</div>
-        </div>
+      <!-- Username -->
+      <div class="text-input" [class.error-border]="submitted && f['username'].errors">
+        <i class="ri-user-fill"></i>
+        <input type="text" formControlName="username" placeholder="Kullanıcı Adı" />
+      </div>
+      <div *ngIf="submitted && f['username'].errors" class="error-text">
+        <small *ngIf="f['username'].errors['required']">Gerekli.</small>
+        <small *ngIf="f['username'].errors['minlength']">En az 3 karakter.</small>
       </div>
 
-      <div class="form-group">
-        <label for="email">E-posta</label>
-        <input 
-          id="email" 
-          type="email" 
-          formControlName="email" 
-          class="form-control"
-          [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" 
-        />
-        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
-          <div *ngIf="f['email'].errors['required']">E-posta zorunludur.</div>
-          <div *ngIf="f['email'].errors['email']">Geçerli bir e-posta adresi giriniz.</div>
-        </div>
+      <!-- Email -->
+      <div class="text-input" [class.error-border]="submitted && f['email'].errors">
+        <i class="ri-mail-fill"></i>
+        <input type="email" formControlName="email" placeholder="E-posta" />
+      </div>
+      <div *ngIf="submitted && f['email'].errors" class="error-text">
+        <small *ngIf="f['email'].errors['required']">Gerekli.</small>
+        <small *ngIf="f['email'].errors['email']">Geçersiz format.</small>
       </div>
       
-      <div class="form-group">
-        <label for="password">Şifre</label>
-        <input 
-          id="password" 
-          type="password" 
-          formControlName="password" 
-          class="form-control"
-          [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
-        />
-        <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
-          <div *ngIf="f['password'].errors['required']">Şifre zorunludur.</div>
-          <div *ngIf="f['password'].errors['minlength']">Şifre en az 6 karakter olmalıdır.</div>
-        </div>
+      <!-- Password -->
+      <div class="text-input" [class.error-border]="submitted && f['password'].errors">
+        <i class="ri-lock-fill"></i>
+        <input type="password" formControlName="password" placeholder="Şifre" />
+      </div>
+      <div *ngIf="submitted && f['password'].errors" class="error-text">
+        <small *ngIf="f['password'].errors['required']">Gerekli.</small>
+        <small *ngIf="f['password'].errors['minlength']">En az 6 karakter.</small>
       </div>
 
-      <div class="form-group">
-        <label for="confirmPassword">Şifre Tekrar</label>
-        <input 
-          id="confirmPassword" 
-          type="password" 
-          formControlName="confirmPassword" 
-          class="form-control"
-          [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }"
-        />
-        <div *ngIf="submitted && f['confirmPassword'].errors" class="invalid-feedback">
-          <div *ngIf="f['confirmPassword'].errors['required']">Şifre tekrarı zorunludur.</div>
-          <div *ngIf="f['confirmPassword'].errors['matching']">Şifreler eşleşmiyor.</div>
-        </div>
+      <!-- Confirm Password -->
+      <div class="text-input" [class.error-border]="submitted && f['confirmPassword'].errors">
+        <i class="ri-lock-password-fill"></i>
+        <input type="password" formControlName="confirmPassword" placeholder="Şifre Tekrar" />
+      </div>
+      <div *ngIf="submitted && f['confirmPassword'].errors" class="error-text">
+        <small *ngIf="f['confirmPassword'].errors['required']">Gerekli.</small>
+        <small *ngIf="f['confirmPassword'].errors['matching']">Eşleşmiyor.</small>
       </div>
 
-      <div class="form-group">
-        <button [disabled]="loading" class="btn-register">
-          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-          Kayıt Ol
-        </button>
-      </div>
+      <button [disabled]="loading" class="login-btn">
+        <span *ngIf="loading" class="spinner"></span>
+        KAYIT OL
+      </button>
 
+      <a routerLink="/login" class="forgot">Zaten hesabınız var mı? Giriş Yapın</a>
     </form>
-    
-    <p class="footer-text">Zaten hesabınız var mı? <a routerLink="/login">Giriş Yapın</a></p>
   </div>
 </div>
