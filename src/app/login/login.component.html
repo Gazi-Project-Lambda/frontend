@@ -1,0 +1,57 @@
+<div class="container">
+  <!-- Left Side Design -->
+  <div class="design">
+    <div class="pill-1 rotate-45"></div>
+    <div class="pill-2 rotate-45"></div>
+    <div class="pill-3 rotate-45"></div>
+    <div class="pill-4 rotate-45"></div>
+  </div>
+
+  <!-- Right Side Login Form -->
+  <div class="login">
+    <h3 class="title">User Login</h3>
+    
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      
+      <!-- Username Input -->
+      <div class="text-input" [class.error-border]="submitted && f['username'].errors">
+        <i class="ri-user-fill"></i>
+        <input 
+          id="username" 
+          type="text" 
+          formControlName="username" 
+          placeholder="Username"
+        />
+      </div>
+      <div *ngIf="submitted && f['username'].errors" class="error-text">
+        <small *ngIf="f['username'].errors['required']">Kullanıcı Adı zorunludur.</small>
+      </div>
+      
+      <!-- Password Input -->
+      <div class="text-input" [class.error-border]="submitted && f['password'].errors">
+        <i class="ri-lock-fill"></i>
+        <input 
+          id="password" 
+          type="password" 
+          formControlName="password" 
+          placeholder="Password"
+        />
+      </div>
+      <div *ngIf="submitted && f['password'].errors" class="error-text">
+        <small *ngIf="f['password'].errors['required']">Şifre zorunludur.</small>
+        <small *ngIf="f['password'].errors['minlength']">En az 6 karakter.</small>
+      </div>
+
+      <div *ngIf="errorMessage" class="error-text general-error">
+        {{ errorMessage }}
+      </div>
+
+      <button [disabled]="loading" class="login-btn">
+        <span *ngIf="loading" class="spinner"></span>
+        LOGIN
+      </button>
+
+      <a routerLink="/register" class="forgot">Hesabınız yok mu? Kayıt Olun</a>
+    </form>
+  </div>
+</div>

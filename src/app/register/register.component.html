@@ -1,0 +1,64 @@
+<div class="container">
+  <!-- Left Side Design -->
+  <div class="design">
+    <div class="pill-1 rotate-45"></div>
+    <div class="pill-2 rotate-45"></div>
+    <div class="pill-3 rotate-45"></div>
+    <div class="pill-4 rotate-45"></div>
+  </div>
+
+  <!-- Right Side Register Form -->
+  <div class="login"> <!-- Keeping class 'login' for shared CSS styles -->
+    <h3 class="title">Hesap Oluştur</h3>
+    
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      
+      <!-- Username -->
+      <div class="text-input" [class.error-border]="submitted && f['username'].errors">
+        <i class="ri-user-fill"></i>
+        <input type="text" formControlName="username" placeholder="Kullanıcı Adı" />
+      </div>
+      <div *ngIf="submitted && f['username'].errors" class="error-text">
+        <small *ngIf="f['username'].errors['required']">Gerekli.</small>
+        <small *ngIf="f['username'].errors['minlength']">En az 3 karakter.</small>
+      </div>
+
+      <!-- Email -->
+      <div class="text-input" [class.error-border]="submitted && f['email'].errors">
+        <i class="ri-mail-fill"></i>
+        <input type="email" formControlName="email" placeholder="E-posta" />
+      </div>
+      <div *ngIf="submitted && f['email'].errors" class="error-text">
+        <small *ngIf="f['email'].errors['required']">Gerekli.</small>
+        <small *ngIf="f['email'].errors['email']">Geçersiz format.</small>
+      </div>
+      
+      <!-- Password -->
+      <div class="text-input" [class.error-border]="submitted && f['password'].errors">
+        <i class="ri-lock-fill"></i>
+        <input type="password" formControlName="password" placeholder="Şifre" />
+      </div>
+      <div *ngIf="submitted && f['password'].errors" class="error-text">
+        <small *ngIf="f['password'].errors['required']">Gerekli.</small>
+        <small *ngIf="f['password'].errors['minlength']">En az 6 karakter.</small>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="text-input" [class.error-border]="submitted && f['confirmPassword'].errors">
+        <i class="ri-lock-password-fill"></i>
+        <input type="password" formControlName="confirmPassword" placeholder="Şifre Tekrar" />
+      </div>
+      <div *ngIf="submitted && f['confirmPassword'].errors" class="error-text">
+        <small *ngIf="f['confirmPassword'].errors['required']">Gerekli.</small>
+        <small *ngIf="f['confirmPassword'].errors['matching']">Eşleşmiyor.</small>
+      </div>
+
+      <button [disabled]="loading" class="login-btn">
+        <span *ngIf="loading" class="spinner"></span>
+        KAYIT OL
+      </button>
+
+      <a routerLink="/login" class="forgot">Zaten hesabınız var mı? Giriş Yapın</a>
+    </form>
+  </div>
+</div>
