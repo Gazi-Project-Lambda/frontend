@@ -1,0 +1,113 @@
+<div class="notes-container">
+    <header>
+        <h1>Notesy - Not Defteriniz</h1>
+        <button (click)="logout()" class="logout-btn">
+            Çıkış Yap
+        </button>
+    </header>
+
+    <div *ngIf="showConfirmMessage" class="confirmation-popup">
+        <div class="confirmation-content">
+            <p>Seçili notu silmek istediğinizden emin misiniz?</p>
+            <div class="button-group">
+                <button (click)="confirmDelete()" class="confirm-btn">
+                    Evet, Sil
+                </button>
+                <button (click)="cancelDelete()" class="cancel-btn">
+                    Hayır
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="main-content">
+
+        <div class="note-form-area"> 
+            
+            <div class="note-add-form">
+                <h2>{{ editingNoteId !== null ? 'Notu Düzenle' : 'Yeni Not Ekle' }}</h2>
+                
+                <form [formGroup]="noteForm" (ngSubmit)="onSubmitNote()">
+                    <input 
+                        type="text" 
+                        formControlName="title" 
+                        placeholder="Not Başlığı (Zorunlu)"
+                    />
+                    <textarea 
+                        formControlName="content" 
+                        placeholder="Not İçeriği (Zorunlu)"
+                    ></textarea>
+                    
+                    <button 
+                        type="submit" 
+                        [disabled]="noteForm.invalid"
+                    >
+                        {{ editingNoteId !== null ? 'Kaydet ve Güncelle' : 'Notu Kaydet' }}
+                    </button>
+                    
+                    <button
+                        *ngIf="editingNoteId !== null"
+                        type="button"
+                        (click)="cancelEdit()"
+                        class="cancel-edit-btn"
+                    >
+                        Düzenlemeyi İptal Et
+                    </button>
+                </form>
+            </div>
+
+            <hr>
+            
+            <h2 class="mobile-notes-heading">Notlarınız</h2> 
+        </div>
+
+        <div class="notes-list-wrapper">
+            <div class="notes-list">
+                
+                <h2>Notlarınız ({{ notes.length }})</h2>
+                
+                <div *ngFor="let note of notes" 
+                     class="note-card" 
+                     [class.completed]="note.isCompleted" 
+                     [class.is-editing]="note.id === editingNoteId">
+                     
+                    <div class="note-header">
+                        <h3 [class.strikethrough]="note.isCompleted">{{ note.title }}</h3>
+                        
+                        <div class="card-actions">
+                            
+                            <button 
+                                (click)="editNote(note)" 
+                                class="edit-note-btn" 
+                                title="Notu Düzenle">
+                                &#x270E; </button>
+                            
+                            <button 
+                                (click)="toggleNoteCompletion(note.id)" 
+                                class="complete-note-btn" 
+                                [ngClass]="note.isCompleted ? 'undo-btn' : 'complete-btn'"
+                                title="{{ note.isCompleted ? 'Tekrar Beklemeye Al' : 'Tamamlandı Olarak İşaretle' }}">
+                                
+                                <span *ngIf="!note.isCompleted">&#10003;</span> 
+                                <span *ngIf="note.isCompleted">&#x21BA;</span> 
+                            </button>
+                            
+                            <button 
+                                (click)="initiateDelete(note.id)" 
+                                class="delete-note-btn" 
+                                title="Notu Sil">
+                                &#x2715; 
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <p [class.fade-text]="note.isCompleted">{{ note.content }}</p>
+                    <small>Eklenme Tarihi: {{ note.timestamp | date:'short' }}</small>
+                </div>
+                
+                <div *ngIf="notes.length === 0" class="no-notes-message">
+                    Henüz hiç notunuz yok. Yeni bir tane ekleyin!
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

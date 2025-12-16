@@ -1,0 +1,403 @@
+/* GENEL STİL VE FONT */
+:host {
+    display: block;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f7f7f7; 
+}
+
+/* CONTAINER - Sayfanın Ana Çerçevesi */
+.notes-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1;
+}
+
+/* BAŞLIK VE LOGOUT BÖLÜMÜ */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f0f0f0;
+    margin-bottom: 25px;
+}
+
+header h1 {
+    font-size: 1.8rem;
+    color: #444;
+    font-weight: 700;
+}
+
+/* LOGOUT BUTONU */
+.logout-btn {
+    padding: 8px 15px;
+    color: white;
+    background: linear-gradient(to right, #fa538d, #89379c);
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    box-shadow: 0 4px 10px rgba(137, 55, 156, 0.4);
+    transform: translateY(-1px);
+}
+
+/* ======================================= */
+/* YENİ GRID DÜZENİ */
+/* ======================================= */
+.main-content {
+    display: grid;
+    grid-template-columns: 40% 60%; 
+    gap: 30px;
+    padding-top: 5px;
+}
+
+/* SOL SÜTUN: Form Alanı */
+.note-form-area {
+    padding: 0 10px;
+}
+
+.mobile-notes-heading {
+    display: none; 
+    font-size: 1.4rem;
+    color: #555;
+    margin-top: 20px;
+}
+
+/* SAĞ SÜTUN: Liste Alanı */
+.notes-list-wrapper {
+    height: 70vh; 
+    overflow-y: auto; 
+    padding-right: 15px;
+    padding-top: 5px; 
+    border-left: 1px solid #f0f0f0; 
+    padding-left: 25px;
+}
+
+/* Not Ekleme Formu Stilleri */
+.note-add-form h2 {
+    font-size: 1.4rem;
+    color: #555;
+    margin-bottom: 15px;
+    border-left: 4px solid #ff966d;
+    padding-left: 10px;
+}
+
+.note-add-form input,
+.note-add-form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #e6e6e6;
+    background: #fcfcfc;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.note-add-form input:focus,
+.note-add-form textarea:focus {
+    border-color: #89379c;
+    box-shadow: 0 0 5px rgba(137, 55, 156, 0.2);
+    outline: none;
+}
+
+.note-add-form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.note-add-form button {
+    width: 100%;
+    padding: 12px;
+    color: white;
+    background: linear-gradient(to right, #ff966d, #fa538d, #89379c);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: opacity 0.3s, box-shadow 0.3s;
+    /* DÜZELTME: Butonlar arası boşluk */
+    margin-bottom: 10px; 
+}
+
+.note-add-form button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* DÜZELTME: Düzenlemeyi İptal Et Butonu */
+.note-add-form .cancel-edit-btn {
+    width: 100%;
+    padding: 12px;
+    color: #89379c; /* Marka Rengi */
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: background-color 0.2s;
+    /* DÜZELTME: Margin-top kaldırıldı, button sınıfındaki margin yeterli */
+    margin-top: 0; 
+}
+
+.note-add-form .cancel-edit-btn:hover {
+    background-color: #e0e0e0;
+}
+
+/* AYIRICI ÇİZGİ */
+hr {
+    border: none;
+    height: 1px;
+    background-color: #f0f0f0;
+    margin: 20px 0;
+}
+
+/* NOT LİSTESİ */
+.notes-list h2 {
+    font-size: 1.4rem;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* NOT KARTLARI */
+.note-card {
+    background: #fafafa;
+    border: 1px solid #eee;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-left 0.3s;
+    border-left: 5px solid #ff966d; 
+}
+
+.note-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* TAMAMLANDI (COMPLETED) STİLİ */
+.note-card.completed {
+    background: #f6f6f6;
+    border-left-color: #9a9a9a; 
+}
+
+.strikethrough {
+    text-decoration: line-through;
+    color: #9a9a9a !important; 
+}
+
+.fade-text {
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+/* KART İÇİ BAŞLIK VE AKSİYON GRUBU */
+.note-card .note-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 5px;
+}
+
+.note-card h3 {
+    margin-top: 0;
+    color: #89379c; 
+    font-size: 1.2rem;
+}
+
+.note-card p {
+    color: #666;
+    line-height: 1.5;
+    margin: 10px 0;
+}
+
+.note-card small {
+    display: block;
+    color: #aaa;
+    font-size: 0.75rem;
+}
+
+/* KART BUTON GRUBU */
+.card-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* ======================================= */
+/* DÜZENLE BUTONU (YENİ CSS) */
+/* ======================================= */
+.edit-note-btn {
+    padding: 6px 8px;
+    /* DÜZELTME: Marka rengi uyumu için degrade rengi kullanıldı */
+    background-color: #fa538d; 
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    line-height: 1;
+    transition: background-color 0.2s;
+}
+
+.edit-note-btn:hover {
+    background-color: #e33b77; /* Daha koyu pembe */
+}
+
+/* TAMAMLANDI BUTON STİLLERİ */
+.complete-note-btn {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: background-color 0.2s, opacity 0.2s;
+}
+
+.complete-btn {
+    background-color: #5cb85c; 
+    color: white;
+}
+
+.complete-btn:hover {
+    background-color: #4cae4c;
+}
+
+.undo-btn {
+    background-color: #89379c; 
+    color: white;
+    font-size: 1rem;
+}
+
+.undo-btn:hover {
+    opacity: 0.8;
+}
+
+/* SİL BUTONU */
+.delete-note-btn {
+    background: none;
+    border: none;
+    color: #dc3545;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s, color 0.2s;
+    line-height: 1;
+    padding: 0 5px;
+}
+
+.delete-note-btn:hover {
+    opacity: 1;
+    color: #c82333;
+}
+
+.no-notes-message {
+    text-align: center;
+    padding: 40px;
+    background: #fcfcfc;
+    border: 1px dashed #ddd;
+    border-radius: 10px;
+    color: #999;
+    font-style: italic;
+}
+
+/* SİLME ONAY POPUP'I STİLİ (Aynı kaldı) */
+.confirmation-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; 
+}
+
+.confirmation-content {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    text-align: center;
+    transition: transform 0.3s ease-out;
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.confirm-btn {
+    padding: 10px 20px;
+    color: white;
+    background-color: #dc3545;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.cancel-btn {
+    padding: 10px 20px;
+    color: #333;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* ======================================= */
+/* RESPONSIVE DÜZENLEME */
+/* ======================================= */
+@media (max-width: 992px) {
+    .main-content {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .notes-container {
+        margin: 20px 15px;
+        padding: 20px;
+    }
+    
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    header h1 {
+        margin-bottom: 15px;
+    }
+
+    .notes-list-wrapper {
+        height: auto;
+        border-left: none;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    
+    .mobile-notes-heading {
+        display: block; 
+    }
+    
+    .notes-list h2 {
+        display: none; 
+    }
+}
