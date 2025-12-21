@@ -4,6 +4,7 @@
 
 export interface User {
   id: number;
+  username: string;
   email: string;
   passwordHash: string;
 }
@@ -15,8 +16,16 @@ export async function findUserByEmail(email: string): Promise<User | undefined> 
   return users.find((u) => u.email.toLowerCase() === email.toLowerCase());
 }
 
-export async function createUser(email: string, passwordHash: string): Promise<User> {
-  const user: User = { id: nextId++, email, passwordHash };
+export async function findUserById(id: number): Promise<User | undefined> {
+  return users.find((u) => u.id === id);
+}
+
+export async function findUserByUsername(username: string): Promise<User | undefined> {
+  return users.find((u) => u.username.toLowerCase() === username.toLowerCase());
+}
+
+export async function createUser(username: string, email: string, passwordHash: string): Promise<User> {
+  const user: User = { id: nextId++, username, email, passwordHash };
   users.push(user);
   return user;
 }

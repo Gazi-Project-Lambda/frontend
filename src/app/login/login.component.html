@@ -10,32 +10,31 @@
   <!-- Right Side Login Form -->
   <div class="login">
     <h3 class="title">User Login</h3>
-    
+
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      
       <!-- Username Input -->
       <div class="text-input" [class.error-border]="submitted && f['username'].errors">
         <i class="ri-user-fill"></i>
-        <input 
-          id="username" 
-          type="text" 
-          formControlName="username" 
-          placeholder="Username"
-        />
+        <input id="username" type="text" formControlName="username" placeholder="Username" />
       </div>
       <div *ngIf="submitted && f['username'].errors" class="error-text">
         <small *ngIf="f['username'].errors['required']">Kullanıcı Adı zorunludur.</small>
       </div>
-      
+
       <!-- Password Input -->
       <div class="text-input" [class.error-border]="submitted && f['password'].errors">
         <i class="ri-lock-fill"></i>
-        <input 
-          id="password" 
-          type="password" 
-          formControlName="password" 
+        <input
+          id="password"
+          [type]="showPassword ? 'text' : 'password'"
+          formControlName="password"
           placeholder="Password"
         />
+        <i
+          class="password-toggle-icon"
+          [class]="showPassword ? 'ri-eye-off-fill' : 'ri-eye-fill'"
+          (click)="togglePasswordVisibility()"
+        ></i>
       </div>
       <div *ngIf="submitted && f['password'].errors" class="error-text">
         <small *ngIf="f['password'].errors['required']">Şifre zorunludur.</small>

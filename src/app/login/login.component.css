@@ -93,6 +93,18 @@ h3.title {
   color: #686868;
 }
 
+.password-toggle-icon {
+  color: #686868;
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 1.2rem;
+  transition: color 0.3s;
+}
+
+.password-toggle-icon:hover {
+  color: #fa538d;
+}
+
 ::placeholder {
   color: #9a9a9a;
 }

@@ -36,17 +36,37 @@
       <!-- Password -->
       <div class="text-input" [class.error-border]="submitted && f['password'].errors">
         <i class="ri-lock-fill"></i>
-        <input type="password" formControlName="password" placeholder="Şifre" />
+        <input 
+          [type]="showPassword ? 'text' : 'password'"
+          formControlName="password" 
+          placeholder="Şifre" 
+        />
+        <i 
+          class="password-toggle-icon"
+          [class]="showPassword ? 'ri-eye-off-fill' : 'ri-eye-fill'"
+          (click)="togglePasswordVisibility()"
+        ></i>
       </div>
       <div *ngIf="submitted && f['password'].errors" class="error-text">
         <small *ngIf="f['password'].errors['required']">Gerekli.</small>
         <small *ngIf="f['password'].errors['minlength']">En az 6 karakter.</small>
+        <small *ngIf="f['password'].errors['noUppercase']">En az 1 büyük harf gerekli.</small>
+        <small *ngIf="f['password'].errors['noSpecialChar']">En az 1 şekil karakter gerekli (.,;:!? vs.).</small>
       </div>
 
       <!-- Confirm Password -->
       <div class="text-input" [class.error-border]="submitted && f['confirmPassword'].errors">
         <i class="ri-lock-password-fill"></i>
-        <input type="password" formControlName="confirmPassword" placeholder="Şifre Tekrar" />
+        <input 
+          [type]="showConfirmPassword ? 'text' : 'password'"
+          formControlName="confirmPassword" 
+          placeholder="Şifre Tekrar" 
+        />
+        <i 
+          class="password-toggle-icon"
+          [class]="showConfirmPassword ? 'ri-eye-off-fill' : 'ri-eye-fill'"
+          (click)="toggleConfirmPasswordVisibility()"
+        ></i>
       </div>
       <div *ngIf="submitted && f['confirmPassword'].errors" class="error-text">
         <small *ngIf="f['confirmPassword'].errors['required']">Gerekli.</small>

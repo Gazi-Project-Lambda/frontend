@@ -92,6 +92,18 @@ h3.title {
 .text-input i { color: #686868; }
 ::placeholder { color: #9a9a9a; }
 
+.password-toggle-icon {
+  color: #686868;
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 1.2rem;
+  transition: color 0.3s;
+}
+
+.password-toggle-icon:hover {
+  color: #fa538d;
+}
+
 /* Button */
 .login-btn {
   width: 100%;

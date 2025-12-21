@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
   loading: boolean = false;
   submitted: boolean = false;
   errorMessage: string = '';
+  showPassword: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -36,6 +37,10 @@ export class LoginComponent implements OnInit {
     });
   }
 
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
 
   get f(): { [key: string]: AbstractControl } { 
     return this.loginForm.controls; 
