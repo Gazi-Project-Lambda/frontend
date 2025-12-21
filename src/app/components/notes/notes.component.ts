@@ -1,26 +1,21 @@
+// src/app/components/notes/notes.component.ts
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-// Formlar için gerekli importlar
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms'; 
-// Drag and Drop imports
 import { DragDropModule, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-
-// Servisleri import ediyoruz
 import { AuthService } from '../../services/auth.service';
 import { NotesService, Note } from '../../services/notes.service';
 
 @Component({
   selector: 'app-notes',
   standalone: true,
-  // Added DragDropModule and FormsModule
   imports: [CommonModule, ReactiveFormsModule, DragDropModule, FormsModule], 
   templateUrl: './notes.component.html',
   styleUrls: ['./notes.component.css']
 })
 export class NotesComponent implements OnInit {
   
-  // Enjekte edilen servisler (Dependency Injection)
   private authService = inject(AuthService);
   private notesService = inject(NotesService);
   private router = inject(Router);
@@ -28,14 +23,11 @@ export class NotesComponent implements OnInit {
 
   notes: Note[] = [];
   noteForm!: FormGroup; 
-  showConfirmMessage: boolean = false; // Onay kutusunu göster/gizle
+  showConfirmMessage: boolean = false;
   noteToDeleteId: number | null = null; 
   editingNoteId: number | null = null;
-  
-  // --- NEW: Search State ---
   searchQuery: string = '';
 
-  // --- NEW: Filtered Notes Getter ---
   get displayNotes(): Note[] {
     if (!this.searchQuery || this.searchQuery.trim() === '') {
         return this.notes;
@@ -47,24 +39,15 @@ export class NotesComponent implements OnInit {
     );
   }
 
-  // --- NEW: Drag and Drop Handler ---
   drop(event: CdkDragDrop<Note[]>): void {
-    // Prevent reordering while filtering to maintain index integrity
     if (this.searchQuery.trim() === '') {
         moveItemInArray(this.notes, event.previousIndex, event.currentIndex);
+        // Note: Real backend reordering requires updating 'order' fields in DB
     }
   }
 
-  toggleNoteCompletion(id: number): void {
-        this.notesService.toggleComplete(id);
-        this.loadNotes(); // Listeyi güncel görünüm için yenile
-    }
-
   ngOnInit(): void {
-    // 1. Notları yükleme
     this.loadNotes();
-
-    // 2. Not ekleme formunu oluşturma
     this.noteForm = this.formBuilder.group({
       title: ['', Validators.required],
       content: ['', Validators.required]
@@ -72,13 +55,19 @@ export class NotesComponent implements OnInit {
   }
 
   loadNotes(): void {
-    this.notes = this.notesService.getNotes();
+    this.notesService.getNotes().subscribe(notes => {
+      this.notes = notes;
+    });
   }
 
-  // Formdan çağrılan metod (onSubmitNote)
+  toggleNoteCompletion(note: Note): void {
+    this.notesService.toggleComplete(note).subscribe(() => {
+      // Refresh list or simple object update handled by reference
+    });
+  }
+
   onSubmitNote(): void {
     if (this.noteForm.invalid) {
-      // Alert yerine daha sonra Toastr veya benzeri bir bildirim kullanabilirsiniz.
       alert('Lütfen hem başlık hem de içerik giriniz.'); 
       return;
     }
@@ -86,57 +75,56 @@ export class NotesComponent implements OnInit {
     const { title, content } = this.noteForm.value;
 
     if (this.editingNoteId !== null) {
-            // DÜZENLEME MODU: Notu güncelle
-            this.notesService.updateNote(this.editingNoteId, title, content);
-            this.editingNoteId = null; // Düzenleme modundan çık
-        } else {
-            // EKLEME MODU: Yeni not ekle
-            this.notesService.addNote(title, content);
+        // Find existing note object to preserve other fields like ID and Date
+        const existing = this.notes.find(n => n.id === this.editingNoteId);
+        if (existing) {
+          const updatedNote = { ...existing, title, content, timestamp: new Date() };
+          this.notesService.updateNote(updatedNote).subscribe(() => {
+             this.loadNotes();
+             this.cancelEdit();
+          });
         }
-
-    this.loadNotes();
-    this.noteForm.reset();
+    } else {
+        this.notesService.addNote(title, content).subscribe(() => {
+          this.loadNotes();
+          this.noteForm.reset();
+        });
+    }
   }
   
-  editNote(note: Note): void { // <--- EKLENDİ
+  editNote(note: Note): void {
         this.editingNoteId = note.id;
-        
-        // Formu mevcut notun verileriyle doldur
         this.noteForm.setValue({
             title: note.title,
             content: note.content
         });
-        
-        // Form alanlarına odaklan (isteğe bağlı)
-        // Eğer Form alanı scroll dışında kaldıysa, kullanıcıyı oraya yönlendirir.
-    }
+  }
 
-    initiateDelete(id: number): void { 
+  initiateDelete(id: number): void { 
     this.noteToDeleteId = id;
     this.showConfirmMessage = true;
   }
-// YENİ  Düzenleme modundan çıkar
-    cancelEdit(): void { // <--- EKLENDİ
-        this.editingNoteId = null;
-        this.noteForm.reset();
-    }
-  // 2. ADIM: Kullanıcı "Evet, Sil" dediğinde çalışır
+
+  cancelEdit(): void {
+      this.editingNoteId = null;
+      this.noteForm.reset();
+  }
+
   confirmDelete(): void {
     if (this.noteToDeleteId !== null) {
-      this.notesService.deleteNote(this.noteToDeleteId);
-      this.loadNotes(); // Listeyi yenilemek için
+      this.notesService.deleteNote(this.noteToDeleteId).subscribe(() => {
+        this.loadNotes();
+      });
     }
-    this.showConfirmMessage = false; // Popup'ı kapat
+    this.showConfirmMessage = false;
     this.noteToDeleteId = null;
   }
 
-  // 3. ADIM: Kullanıcı "Hayır" dediğinde çalışır
   cancelDelete(): void {
-    this.showConfirmMessage = false; // Popup'ı kapat
+    this.showConfirmMessage = false; 
     this.noteToDeleteId = null;
   }
 
-  // Çıkış (Logout) Metodu
   logout(): void {
     this.authService.logout(); 
     this.router.navigate(['/login']); 

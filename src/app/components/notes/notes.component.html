@@ -103,7 +103,7 @@
                                     &#x270E; </button>
                                 
                                 <button 
-                                    (click)="toggleNoteCompletion(note.id)" 
+                                    (click)="toggleNoteCompletion(note)"
                                     class="complete-note-btn" 
                                     [ngClass]="note.isCompleted ? 'undo-btn' : 'complete-btn'"
                                     title="{{ note.isCompleted ? 'Tekrar Beklemeye Al' : 'Tamamlandı Olarak İşaretle' }}">

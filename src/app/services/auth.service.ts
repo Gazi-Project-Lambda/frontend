@@ -1,30 +1,50 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, tap, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
+interface AuthResponse {
+  authToken: string;
+  refreshToken: string;
+}
 
 @Injectable({
-  // servisi tüm uygulamada (root) erişilebilir yapar
   providedIn: 'root'
 })
 export class AuthService {
-  // Kullanıcının oturum durumunu tutan değişken.Başlangıçta false (giriş yapılmamış)
-  private loggedInStatus = false;
+  private http = inject(HttpClient);
+  
+  private loginUrl = 'api/login'; 
+  private registerUrl = 'api/users';
 
-  constructor() { }
+  register(user: any): Observable<any> {
+    return this.http.post(this.registerUrl, user);
+  }
 
-  // Kullanıcının giriş yapıp yapmadığını döndürür
+  login(credentials: any): Observable<AuthResponse> {
+    console.log('🚀 AuthService: Sending login request...', credentials);
+    
+    return this.http.post<AuthResponse>(this.loginUrl, credentials).pipe(
+      tap(response => {
+        console.log('✅ AuthService: Received response:', response);
+        if(response.authToken) {
+          localStorage.setItem('access_token', response.authToken);
+          localStorage.setItem('refresh_token', response.refreshToken);
+        }
+      }),
+      catchError(error => {
+        console.error('🔥 AuthService: Error:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  logout() {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+  }
+
   isLoggedIn(): boolean {
-    return this.loggedInStatus;
-  }
-
-  // Durumu true yapar (simülasyon için bu şekilde yazdım)
-  // Gerçek uygulamada API çağrısı ve JWT/token kaydı burada olacak
-  login(): void {
-    this.loggedInStatus = true;
-    console.log('Kullanıcı Giriş Yaptı (Simülasyon).');
-  }
-
-  // Çıkış: Durumu false yapar
-  logout(): void {
-    this.loggedInStatus = false;
-    console.log('Kullanıcı Çıkış Yaptı (Simülasyon).');
+    return !!localStorage.getItem('access_token');
   }
 }
