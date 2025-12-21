@@ -1,12 +1,12 @@
 import { Routes } from '@angular/router';
 
-// 1. Gerekli component'leri import edin (Mevcut olanlara Notes ekleniyor)
+// 1. Gerekli component'leri import edin
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { NotesComponent } from './components/notes/notes.component'; // <--- EKLENDİ
+import { NotesComponent } from './components/notes/notes.component';
 
 // 2. Auth Guard'ı import edin
-import { authGuard } from './guards/auth.guard'; // <--- EKLENDİ
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     // Login Rotası (Korunmasız)
@@ -15,17 +15,14 @@ export const routes: Routes = [
     // Register Rotası (Korunmasız)
     { path: 'register', component: RegisterComponent },
 
-    // NOTLAR ROTASI: KORUNMALI ROTA! <--- EKLENDİ
+    // NOTLAR ROTASI: KORUNMALI ROTA!
     // 'canActivate' dizisine authGuard'ı ekleyerek bu rotayı koruyoruz.
     {
         path: 'notes',
         component: NotesComponent,
-        canActivate: [authGuard] // <--- BU SATIR, ROTAYI KORUR
+        canActivate: [authGuard]
     },
     
     // Varsayılan yol: Uygulama başladığında '/login' sayfasına yönlendir.
     { path: '', redirectTo: 'login', pathMatch: 'full' }
-
-    // Not: Tüm tanımlanmamış yolları da login'e yönlendirebiliriz:
-    // { path: '**', redirectTo: 'login' }
 ];

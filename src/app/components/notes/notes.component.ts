@@ -2,7 +2,9 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 // Formlar için gerekli importlar
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms'; 
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms'; 
+// Drag and Drop imports
+import { DragDropModule, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 // Servisleri import ediyoruz
 import { AuthService } from '../../services/auth.service';
@@ -11,8 +13,8 @@ import { NotesService, Note } from '../../services/notes.service';
 @Component({
   selector: 'app-notes',
   standalone: true,
-  // ReactiveFormsModule'ü imports dizisine ekliyoruz
-  imports: [CommonModule, ReactiveFormsModule], 
+  // Added DragDropModule and FormsModule
+  imports: [CommonModule, ReactiveFormsModule, DragDropModule, FormsModule], 
   templateUrl: './notes.component.html',
   styleUrls: ['./notes.component.css']
 })
@@ -29,6 +31,29 @@ export class NotesComponent implements OnInit {
   showConfirmMessage: boolean = false; // Onay kutusunu göster/gizle
   noteToDeleteId: number | null = null; 
   editingNoteId: number | null = null;
+  
+  // --- NEW: Search State ---
+  searchQuery: string = '';
+
+  // --- NEW: Filtered Notes Getter ---
+  get displayNotes(): Note[] {
+    if (!this.searchQuery || this.searchQuery.trim() === '') {
+        return this.notes;
+    }
+    const query = this.searchQuery.toLowerCase();
+    return this.notes.filter(note => 
+        note.title.toLowerCase().includes(query) || 
+        note.content.toLowerCase().includes(query)
+    );
+  }
+
+  // --- NEW: Drag and Drop Handler ---
+  drop(event: CdkDragDrop<Note[]>): void {
+    // Prevent reordering while filtering to maintain index integrity
+    if (this.searchQuery.trim() === '') {
+        moveItemInArray(this.notes, event.previousIndex, event.currentIndex);
+    }
+  }
 
   toggleNoteCompletion(id: number): void {
         this.notesService.toggleComplete(id);

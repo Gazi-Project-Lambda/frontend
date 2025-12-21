@@ -64,48 +64,70 @@
             <div class="notes-list">
                 
                 <h2>Notlarınız ({{ notes.length }})</h2>
-                
-                <div *ngFor="let note of notes" 
-                     class="note-card" 
-                     [class.completed]="note.isCompleted" 
-                     [class.is-editing]="note.id === editingNoteId">
-                     
-                    <div class="note-header">
-                        <h3 [class.strikethrough]="note.isCompleted">{{ note.title }}</h3>
-                        
-                        <div class="card-actions">
-                            
-                            <button 
-                                (click)="editNote(note)" 
-                                class="edit-note-btn" 
-                                title="Notu Düzenle">
-                                &#x270E; </button>
-                            
-                            <button 
-                                (click)="toggleNoteCompletion(note.id)" 
-                                class="complete-note-btn" 
-                                [ngClass]="note.isCompleted ? 'undo-btn' : 'complete-btn'"
-                                title="{{ note.isCompleted ? 'Tekrar Beklemeye Al' : 'Tamamlandı Olarak İşaretle' }}">
-                                
-                                <span *ngIf="!note.isCompleted">&#10003;</span> 
-                                <span *ngIf="note.isCompleted">&#x21BA;</span> 
-                            </button>
-                            
-                            <button 
-                                (click)="initiateDelete(note.id)" 
-                                class="delete-note-btn" 
-                                title="Notu Sil">
-                                &#x2715; 
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <p [class.fade-text]="note.isCompleted">{{ note.content }}</p>
-                    <small>Eklenme Tarihi: {{ note.timestamp | date:'short' }}</small>
+
+                <div class="search-container">
+                    <input 
+                        type="text" 
+                        [(ngModel)]="searchQuery" 
+                        placeholder="Ara: Başlık veya içerik..." 
+                        class="search-input"
+                    >
                 </div>
                 
-                <div *ngIf="notes.length === 0" class="no-notes-message">
-                    Henüz hiç notunuz yok. Yeni bir tane ekleyin!
+                <div cdkDropList 
+                     (cdkDropListDropped)="drop($event)" 
+                     [cdkDropListDisabled]="searchQuery.length > 0"
+                     class="drop-list">
+                     
+                    <div *ngFor="let note of displayNotes" 
+                         cdkDrag
+                         class="note-card" 
+                         [class.completed]="note.isCompleted" 
+                         [class.is-editing]="note.id === editingNoteId">
+                         
+                        <div *cdkDragPlaceholder class="custom-placeholder"></div>
+
+                        <div class="note-header">
+                            <h3 [class.strikethrough]="note.isCompleted">
+                                <!-- NEW: Added a drag handle for better UX. Dragging only works when not searching. -->
+                                <span *ngIf="searchQuery.length === 0" cdkDragHandle class="drag-handle" title="Sürükle">&#9776;</span>
+                                {{ note.title }}
+                            </h3>
+                            
+                            <div class="card-actions">
+                                
+                                <button 
+                                    (click)="editNote(note)" 
+                                    class="edit-note-btn" 
+                                    title="Notu Düzenle">
+                                    &#x270E; </button>
+                                
+                                <button 
+                                    (click)="toggleNoteCompletion(note.id)" 
+                                    class="complete-note-btn" 
+                                    [ngClass]="note.isCompleted ? 'undo-btn' : 'complete-btn'"
+                                    title="{{ note.isCompleted ? 'Tekrar Beklemeye Al' : 'Tamamlandı Olarak İşaretle' }}">
+                                    
+                                    <span *ngIf="!note.isCompleted">&#10003;</span> 
+                                    <span *ngIf="note.isCompleted">&#x21BA;</span> 
+                                </button>
+                                
+                                <button 
+                                    (click)="initiateDelete(note.id)" 
+                                    class="delete-note-btn" 
+                                    title="Notu Sil">
+                                    &#x2715; 
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <p [class.fade-text]="note.isCompleted">{{ note.content }}</p>
+                        <small>Eklenme Tarihi: {{ note.timestamp | date:'short' }}</small>
+                    </div>
+                </div>
+                
+                <div *ngIf="displayNotes.length === 0" class="no-notes-message">
+                    {{ notes.length === 0 ? 'Henüz hiç notunuz yok. Yeni bir tane ekleyin!' : 'Aradığınız kriterlere uygun not bulunamadı.' }}
                 </div>
             </div>
         </div>

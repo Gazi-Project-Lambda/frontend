@@ -401,3 +401,65 @@ hr {
         display: none; 
     }
 }
+
+
+/* --- NEW STYLES START HERE --- */
+
+/* Search Input Styles */
+.search-container {
+    margin-bottom: 20px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    background: #fdfdfd;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #89379c;
+    box-shadow: 0 0 5px rgba(137, 55, 156, 0.2);
+}
+
+/* --- NEW DRAG & DROP ANIMATION STYLES --- */
+
+.cdk-drop-list-dragging .note-card:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-animating {
+    transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 12px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    opacity: 0.9;
+    transform: scale(1.02);
+}
+
+.custom-placeholder {
+    background: #f0f0f0;
+    border: 2px dashed #ccc;
+    min-height: 100px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.drag-handle {
+    cursor: grab;
+    color: #ccc;
+    margin-right: 10px;
+    transition: color 0.2s;
+}
+
+.note-card:hover .drag-handle {
+    color: #999;
+}
