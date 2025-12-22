@@ -1,0 +1,7 @@
+{
+  "/api": {
+    "target": "https://notes-fwm8.onrender.com",
+    "secure": false,
+    "changeOrigin": true
+  }
+}
