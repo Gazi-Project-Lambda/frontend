@@ -1,24 +1,33 @@
-/* GENEL STİL VE FONT */
 :host {
     display: block;
     font-family: 'Poppins', sans-serif;
+    /* The body background will handle the gradient, but we can set a fallback */
     background-color: #f7f7f7; 
 }
 
-/* CONTAINER - Sayfanın Ana Çerçevesi */
+/* 
+  STEP 1: Define the main container's size and make it a flexbox column.
+  This is the most important change. It creates a fixed-height "box" for our layout.
+*/
 .notes-container {
     max-width: 1200px;
-    margin: 40px auto;
+    width: 90vw;
+    margin: 20px auto;
     padding: 30px;
     background: white;
     border-radius: 20px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    position: relative;
-    z-index: 1;
+
+    /* --- NEW FLEXBOX LAYOUT --- */
+    display: flex;
+    flex-direction: column;
+    height: 85vh; /* Set a fixed height for the whole component */
+    max-height: 800px; /* Optional: prevent it from being too tall on large screens */
 }
 
-/* BAŞLIK VE LOGOUT BÖLÜMÜ */
+/* STEP 2: Make sure the header doesn't grow or shrink */
 header {
+    flex-shrink: 0; /* Prevents the header from shrinking */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -33,7 +42,6 @@ header h1 {
     font-weight: 700;
 }
 
-/* LOGOUT BUTONU */
 .logout-btn {
     padding: 8px 15px;
     color: white;
@@ -50,14 +58,16 @@ header h1 {
     transform: translateY(-1px);
 }
 
-/* ======================================= */
-/* YENİ GRID DÜZENİ */
-/* ======================================= */
+/* 
+  STEP 3: Allow the main grid content to grow and fill the remaining space.
+  Crucially, `overflow: hidden` tells the grid to not exceed this space.
+*/
 .main-content {
+    flex-grow: 1; /* This makes the grid area fill the available vertical space */
     display: grid;
     grid-template-columns: 40% 60%; 
     gap: 30px;
-    padding-top: 5px;
+    overflow: hidden; /* This is essential for the child scrolling to work */
 }
 
 /* SOL SÜTUN: Form Alanı */
@@ -65,22 +75,18 @@ header h1 {
     padding: 0 10px;
 }
 
-.mobile-notes-heading {
-    display: none; 
-    font-size: 1.4rem;
-    color: #555;
-    margin-top: 20px;
-}
-
-/* SAĞ SÜTUN: Liste Alanı */
+/* 
+  STEP 4: Make the notes list scroll within its given space.
+  The height is no longer needed because its parent grid now has a defined height.
+*/
 .notes-list-wrapper {
-    height: 70vh; 
-    overflow-y: auto; 
+    overflow-y: auto; /* This will now create a scrollbar when content overflows */
     padding-right: 15px;
-    padding-top: 5px; 
     border-left: 1px solid #f0f0f0; 
     padding-left: 25px;
 }
+
+/* --- ALL OTHER STYLES BELOW REMAIN THE SAME --- */
 
 /* Not Ekleme Formu Stilleri */
 .note-add-form h2 {
@@ -127,7 +133,6 @@ header h1 {
     font-weight: 600;
     font-size: 1.1rem;
     transition: opacity 0.3s, box-shadow 0.3s;
-    /* DÜZELTME: Butonlar arası boşluk */
     margin-bottom: 10px; 
 }
 
@@ -136,11 +141,10 @@ header h1 {
     cursor: not-allowed;
 }
 
-/* DÜZELTME: Düzenlemeyi İptal Et Butonu */
 .note-add-form .cancel-edit-btn {
     width: 100%;
     padding: 12px;
-    color: #89379c; /* Marka Rengi */
+    color: #89379c;
     background-color: #f0f0f0;
     border: 1px solid #ccc;
     border-radius: 10px;
@@ -148,7 +152,6 @@ header h1 {
     font-weight: 600;
     font-size: 1.1rem;
     transition: background-color 0.2s;
-    /* DÜZELTME: Margin-top kaldırıldı, button sınıfındaki margin yeterli */
     margin-top: 0; 
 }
 
@@ -156,7 +159,6 @@ header h1 {
     background-color: #e0e0e0;
 }
 
-/* AYIRICI ÇİZGİ */
 hr {
     border: none;
     height: 1px;
@@ -164,14 +166,12 @@ hr {
     margin: 20px 0;
 }
 
-/* NOT LİSTESİ */
 .notes-list h2 {
     font-size: 1.4rem;
     color: #555;
     margin-bottom: 20px;
 }
 
-/* NOT KARTLARI */
 .note-card {
     background: #fafafa;
     border: 1px solid #eee;
@@ -187,7 +187,6 @@ hr {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
-/* TAMAMLANDI (COMPLETED) STİLİ */
 .note-card.completed {
     background: #f6f6f6;
     border-left-color: #9a9a9a; 
@@ -203,7 +202,6 @@ hr {
     transition: opacity 0.3s ease;
 }
 
-/* KART İÇİ BAŞLIK VE AKSİYON GRUBU */
 .note-card .note-header {
     display: flex;
     justify-content: space-between;
@@ -229,19 +227,14 @@ hr {
     font-size: 0.75rem;
 }
 
-/* KART BUTON GRUBU */
 .card-actions {
     display: flex;
     gap: 8px;
     align-items: center;
 }
 
-/* ======================================= */
-/* DÜZENLE BUTONU (YENİ CSS) */
-/* ======================================= */
 .edit-note-btn {
     padding: 6px 8px;
-    /* DÜZELTME: Marka rengi uyumu için degrade rengi kullanıldı */
     background-color: #fa538d; 
     color: white;
     border: none;
@@ -253,10 +246,9 @@ hr {
 }
 
 .edit-note-btn:hover {
-    background-color: #e33b77; /* Daha koyu pembe */
+    background-color: #e33b77;
 }
 
-/* TAMAMLANDI BUTON STİLLERİ */
 .complete-note-btn {
     padding: 6px 10px;
     border: none;
@@ -286,7 +278,6 @@ hr {
     opacity: 0.8;
 }
 
-/* SİL BUTONU */
 .delete-note-btn {
     background: none;
     border: none;
@@ -314,7 +305,6 @@ hr {
     font-style: italic;
 }
 
-/* SİLME ONAY POPUP'I STİLİ (Aynı kaldı) */
 .confirmation-popup {
     position: fixed;
     top: 0;
@@ -364,48 +354,6 @@ hr {
     font-weight: 600;
 }
 
-/* ======================================= */
-/* RESPONSIVE DÜZENLEME */
-/* ======================================= */
-@media (max-width: 992px) {
-    .main-content {
-        grid-template-columns: 1fr;
-        gap: 0;
-    }
-
-    .notes-container {
-        margin: 20px 15px;
-        padding: 20px;
-    }
-    
-    header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    header h1 {
-        margin-bottom: 15px;
-    }
-
-    .notes-list-wrapper {
-        height: auto;
-        border-left: none;
-        padding-left: 0;
-        padding-right: 0;
-    }
-    
-    .mobile-notes-heading {
-        display: block; 
-    }
-    
-    .notes-list h2 {
-        display: none; 
-    }
-}
-
-
-/* --- NEW STYLES START HERE --- */
-
-/* Search Input Styles */
 .search-container {
     margin-bottom: 20px;
 }
@@ -425,8 +373,6 @@ hr {
     border-color: #89379c;
     box-shadow: 0 0 5px rgba(137, 55, 156, 0.2);
 }
-
-/* --- NEW DRAG & DROP ANIMATION STYLES --- */
 
 .cdk-drop-list-dragging .note-card:not(.cdk-drag-placeholder) {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
@@ -462,4 +408,47 @@ hr {
 
 .note-card:hover .drag-handle {
     color: #999;
+}
+
+/* --- RESPONSIVE STYLES --- */
+
+.mobile-notes-heading {
+    display: none; 
+}
+
+@media (max-width: 992px) {
+    .notes-container {
+      height: auto; /* Allow height to be determined by content on mobile */
+      margin: 10px;
+      padding: 15px;
+    }
+    .main-content {
+        grid-template-columns: 1fr;
+        gap: 0;
+        overflow: visible; /* Allow content to flow naturally */
+    }
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    header h1 {
+        margin-bottom: 15px;
+    }
+
+    .notes-list-wrapper {
+        border-left: none;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    
+    .mobile-notes-heading {
+        display: block; 
+        font-size: 1.4rem;
+        color: #555;
+        margin-top: 20px;
+    }
+    
+    .notes-list h2 {
+        display: none; 
+    }
 }

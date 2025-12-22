@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractContro
 import { CommonModule } from '@angular/common'; 
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -22,11 +23,9 @@ export class LoginComponent implements OnInit {
   errorMessage: string = '';
 
   ngOnInit(): void {
-    // Note: Use 'email' here because your HTML input likely uses formControlName="username" or "email"
-    // Let's align with the HTML provided earlier which had formControlName="username"
+    // Change 'username' to 'email' to match the API and add email validation.
     this.loginForm = this.formBuilder.group({
-      // Mapping the UI "username" field to the "email" logic expected by backend
-      username: ['', Validators.required], 
+      email: ['', [Validators.required, Validators.email]], 
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
@@ -44,21 +43,22 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.errorMessage = '';
 
-    // Create the credentials object. 
-    // The mock service expects 'email' or 'username'.
+    // The payload now correctly uses the 'email' field from the form.
     const credentials = {
-      email: this.loginForm.value.username, // Send the input as email
+      email: this.loginForm.value.email,
       password: this.loginForm.value.password
     };
 
-    this.authService.login(credentials).subscribe({
-      next: (response) => {
-        this.loading = false;
+    this.authService.login(credentials).pipe(
+      finalize(() => this.loading = false)
+    ).subscribe({
+      next: () => {
         this.router.navigate(['/notes']);
       },
       error: (error) => {
-        this.loading = false;
-        this.errorMessage = 'Hatalı Kullanıcı Adı veya Şifre.';
+        this.errorMessage = typeof error.error === 'string' 
+          ? error.error 
+          : 'Invalid email or password.';
         console.error('Login Component Error:', error);
       }
     });

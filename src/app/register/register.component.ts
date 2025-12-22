@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractContro
 import { CommonModule } from '@angular/common'; 
 import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-register',
@@ -45,17 +46,18 @@ export class RegisterComponent implements OnInit {
 
     this.loading = true;
     
-    // Call the API
-    this.authService.register(this.registerForm.value).subscribe({
+    this.authService.register(this.registerForm.value).pipe(
+      finalize(() => this.loading = false)
+    ).subscribe({
       next: () => {
-        this.loading = false;
-        alert('Registration Successful! Please login.');
-        this.router.navigate(['/login']);
+        // The user is now logged in automatically! Navigate them to the notes page.
+        alert('Registration successful! Welcome.');
+        this.router.navigate(['/notes']);
       },
       error: (err) => {
-        this.loading = false;
         console.error(err);
-        alert('Registration failed.');
+        const errorMessage = err.error?.message || 'Registration failed. The email or username may already be in use.';
+        alert(errorMessage);
       }
     });
   }
