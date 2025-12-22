@@ -1,59 +1,173 @@
-# AngularLogin
+# 📝 Angular Notes Application
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.1.
+A full-featured **single-page application (SPA)** built with **modern Angular (v21+)**. The app includes secure user authentication and a complete **CRUD (Create, Read, Update, Delete)** interface for managing personal notes, backed by a live REST API.
 
-## Development server
+🌐 **Live Demo:** [https://frontend-rho-eight-53.vercel.app](https://frontend-rho-eight-53.vercel.app)
 
-To start a local development server, run:
+---
+
+## ✨ Features
+
+### 🔐 User Authentication
+
+* Secure user registration
+* JWT-based login
+
+### 🛡️ Protected Routes
+
+* Notes page is accessible only to authenticated users
+* Enforced via Angular Route Guards
+
+### 🗒️ Full CRUD for Notes
+
+* Create new notes with title and content
+* View all user-owned notes
+* Update notes in-place
+* Delete notes with confirmation dialog
+
+### 🎨 Rich User Experience
+
+* Real-time search & filtering by title or content
+* Drag-and-drop reordering of notes
+* Mark notes as **completed** with visual strikethrough
+* Loading spinners and clear error handling
+
+### 📱 Responsive Design
+
+* Clean, modern UI
+* Optimized for both desktop and mobile devices
+
+---
+
+## 🛠️ Technology Stack
+
+* **Frontend:** Angular v21 (Standalone Components)
+* **Styling:** CSS (modern gradient-based theme)
+* **Icons:** Remix Icon
+* **State Management:** RxJS
+* **Drag & Drop:** Angular CDK
+* **Testing:** Vitest
+
+---
+
+## 🚀 Getting Started
+
+Follow these instructions to run the project locally for development and testing.
+
+### ✅ Prerequisites
+
+* Node.js **v20.x** or higher
+* Angular CLI **v21.x** or higher
+
+---
+
+### 1️⃣ Clone the Repository
+
+```bash
+git clone https://github.com/Gazi-Project-Lambda/angular-login.git
+cd angular-login
+```
+
+---
+
+### 2️⃣ Install Dependencies
+
+```bash
+npm install
+```
+
+---
+
+### 3️⃣ Backend & Proxy Setup (⚠️ Crucial Step)
+
+This project communicates with a **live backend API**. To avoid CORS issues during local development, an Angular proxy is required.
+
+Create a file named **`proxy.conf.json`** in the root directory with the following content:
+
+```json
+{
+  "/api": {
+    "target": "https://notes-fwm8.onrender.com",
+    "secure": false,
+    "changeOrigin": true
+  }
+}
+```
+
+✔️ The `angular.json` file is already configured to use this proxy when running `ng serve`.
+
+---
+
+### 4️⃣ Run the Development Server
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Open your browser and navigate to:
 
-## Code scaffolding
+👉 [http://localhost:4200/](http://localhost:4200/)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+The application will automatically reload when you modify source files.
 
-```bash
-ng generate component component-name
-```
+---
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 🌐 Backend API
 
-```bash
-ng generate --help
-```
+* **Base URL:** [https://notes-fwm8.onrender.com](https://notes-fwm8.onrender.com)
+* **Backend Included:** ❌ No (uses a live hosted API)
+* **API Documentation:** See `api-notes.pdf`
 
-## Building
+No backend setup is required as long as the proxy configuration is correct.
 
-To build the project run:
+---
+
+## 📜 Available Scripts
+
+In the project directory, you can run:
+
+### ▶️ `ng serve`
+
+Runs the application in development mode.
+
+### 🏗️ `ng build`
+
+Builds the application for production into the `dist/` folder with full optimization.
+
+### 🧪 `ng test`
+
+Launches the unit test runner in interactive watch mode using **Vitest**.
+
+---
+
+## 📦 Deployment
+
+To deploy the application:
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+The production-ready files will be generated in:
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
+```
+dist/angular-login/browser
 ```
 
-## Running end-to-end tests
+This folder can be deployed to any static hosting provider such as:
 
-For end-to-end (e2e) testing, run:
+* Vercel
+* Netlify
+* GitHub Pages
 
-```bash
-ng e2e
-```
+✅ The production build uses the live API directly, so the proxy is **not required** after deployment.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+---
 
-## Additional Resources
+## 👤 Author
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+**Gazi – Project Lambda**
+
+---
+
+⭐ If you like this project, feel free to star the repository!
