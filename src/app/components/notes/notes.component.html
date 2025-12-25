@@ -1,47 +1,69 @@
 <div class="notes-container">
     <header>
-        <h1>Notesy - Not Defteriniz</h1>
-        <button (click)="logout()" class="logout-btn">
-            Çıkış Yap
-        </button>
+        <h1>{{ 'APP.TITLE' | translate }}</h1>
+        
+        <div class="header-actions">
+            <!-- Dil Değiştirme Butonları -->
+            <div class="language-switcher">
+                <button 
+                    (click)="switchLanguage('tr')" 
+                    [class.active]="currentLang === 'tr'"
+                    class="lang-btn"
+                    type="button">
+                    TR
+                </button>
+                <button 
+                    (click)="switchLanguage('en')" 
+                    [class.active]="currentLang === 'en'"
+                    class="lang-btn"
+                    type="button">
+                    EN
+                </button>
+            </div>
+            
+            <button (click)="logout()" class="logout-btn">
+                {{ 'APP.LOGOUT' | translate }}
+            </button>
+        </div>
     </header>
 
     <div *ngIf="showConfirmMessage" class="confirmation-popup">
         <div class="confirmation-content">
-            <p>Seçili notu silmek istediğinizden emin misiniz?</p>
+            <p>{{ 'CONFIRM.DELETE_MESSAGE' | translate }}</p>
             <div class="button-group">
                 <button (click)="confirmDelete()" class="confirm-btn">
-                    Evet, Sil
+                    {{ 'CONFIRM.YES_DELETE' | translate }}
                 </button>
                 <button (click)="cancelDelete()" class="cancel-btn">
-                    Hayır
+                    {{ 'CONFIRM.NO' | translate }}
                 </button>
             </div>
         </div>
     </div>
+
     <div class="main-content">
 
         <div class="note-form-area"> 
             
             <div class="note-add-form">
-                <h2>{{ editingNoteId !== null ? 'Notu Düzenle' : 'Yeni Not Ekle' }}</h2>
+                <h2>{{ editingNoteId !== null ? ('NOTES.EDIT' | translate) : ('NOTES.ADD_NEW' | translate) }}</h2>
                 
                 <form [formGroup]="noteForm" (ngSubmit)="onSubmitNote()">
                     <input 
                         type="text" 
                         formControlName="title" 
-                        placeholder="Not Başlığı (Zorunlu)"
+                        [placeholder]="'NOTES.TITLE_PLACEHOLDER' | translate"
                     />
                     <textarea 
                         formControlName="content" 
-                        placeholder="Not İçeriği (Zorunlu)"
+                        [placeholder]="'NOTES.CONTENT_PLACEHOLDER' | translate"
                     ></textarea>
                     
                     <button 
                         type="submit" 
                         [disabled]="noteForm.invalid"
                     >
-                        {{ editingNoteId !== null ? 'Kaydet ve Güncelle' : 'Notu Kaydet' }}
+                        {{ editingNoteId !== null ? ('NOTES.UPDATE' | translate) : ('NOTES.SAVE' | translate) }}
                     </button>
                     
                     <button
@@ -50,26 +72,26 @@
                         (click)="cancelEdit()"
                         class="cancel-edit-btn"
                     >
-                        Düzenlemeyi İptal Et
+                        {{ 'NOTES.CANCEL_EDIT' | translate }}
                     </button>
                 </form>
             </div>
 
             <hr>
             
-            <h2 class="mobile-notes-heading">Notlarınız</h2> 
+            <h2 class="mobile-notes-heading">{{ 'NOTES.MOBILE_HEADING' | translate }}</h2> 
         </div>
 
         <div class="notes-list-wrapper">
             <div class="notes-list">
                 
-                <h2>Notlarınız ({{ notes.length }})</h2>
+                <h2>{{ 'NOTES.COUNT' | translate: {count: notes.length} }}</h2>
 
                 <div class="search-container">
                     <input 
                         type="text" 
                         [(ngModel)]="searchQuery" 
-                        placeholder="Ara: Başlık veya içerik..." 
+                        [placeholder]="'NOTES.SEARCH_PLACEHOLDER' | translate" 
                         class="search-input"
                     >
                 </div>
@@ -89,8 +111,10 @@
 
                         <div class="note-header">
                             <h3 [class.strikethrough]="note.isCompleted">
-                                <!-- NEW: Added a drag handle for better UX. Dragging only works when not searching. -->
-                                <span *ngIf="searchQuery.length === 0" cdkDragHandle class="drag-handle" title="Sürükle">&#9776;</span>
+                                <span *ngIf="searchQuery.length === 0" 
+                                      cdkDragHandle 
+                                      class="drag-handle" 
+                                      [title]="'NOTES.DRAG_HINT' | translate">&#9776;</span>
                                 {{ note.title }}
                             </h3>
                             
@@ -99,14 +123,15 @@
                                 <button 
                                     (click)="editNote(note)" 
                                     class="edit-note-btn" 
-                                    title="Notu Düzenle">
-                                    &#x270E; </button>
+                                    [title]="'NOTES.EDIT_HINT' | translate">
+                                    &#x270E;
+                                </button>
                                 
                                 <button 
                                     (click)="toggleNoteCompletion(note)"
                                     class="complete-note-btn" 
                                     [ngClass]="note.isCompleted ? 'undo-btn' : 'complete-btn'"
-                                    title="{{ note.isCompleted ? 'Tekrar Beklemeye Al' : 'Tamamlandı Olarak İşaretle' }}">
+                                    [title]="note.isCompleted ? ('NOTES.UNDO_HINT' | translate) : ('NOTES.COMPLETE_HINT' | translate)">
                                     
                                     <span *ngIf="!note.isCompleted">&#10003;</span> 
                                     <span *ngIf="note.isCompleted">&#x21BA;</span> 
@@ -115,19 +140,19 @@
                                 <button 
                                     (click)="initiateDelete(note.id)" 
                                     class="delete-note-btn" 
-                                    title="Notu Sil">
+                                    [title]="'NOTES.DELETE_HINT' | translate">
                                     &#x2715; 
                                 </button>
                             </div>
                         </div>
                         
                         <p [class.fade-text]="note.isCompleted">{{ note.content }}</p>
-                        <small>Eklenme Tarihi: {{ note.timestamp | date:'short' }}</small>
+                        <small>{{ 'NOTES.CREATED_AT' | translate }}: {{ note?.createdAt | date:'short' }}</small>
                     </div>
                 </div>
                 
                 <div *ngIf="displayNotes.length === 0" class="no-notes-message">
-                    {{ notes.length === 0 ? 'Henüz hiç notunuz yok. Yeni bir tane ekleyin!' : 'Aradığınız kriterlere uygun not bulunamadı.' }}
+                    {{ notes.length === 0 ? ('NOTES.NO_NOTES' | translate) : ('NOTES.NO_SEARCH_RESULTS' | translate) }}
                 </div>
             </div>
         </div>

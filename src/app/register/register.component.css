@@ -156,3 +156,37 @@ a:hover { text-decoration: underline; color: #fa538d; }
   }
   .design { display: block; }
 }
+
+/* Dil Değiştirme Butonları */
+.language-switcher {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  gap: 10px;
+}
+
+.lang-btn {
+  padding: 8px 16px;
+  border: 2px solid #ddd;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.lang-btn:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+}
+
+.lang-btn.active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}

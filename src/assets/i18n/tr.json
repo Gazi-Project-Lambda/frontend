@@ -1,0 +1,89 @@
+{
+  "APP": {
+    "TITLE": "Notesy - Not Defteriniz",
+    "LOGOUT": "Çıkış Yap"
+  },
+  "LOGIN": {
+    "TITLE": "Kullanıcı Girişi",
+    "EMAIL": "E-posta",
+    "PASSWORD": "Şifre",
+    "EMAIL_PLACEHOLDER": "E-posta",
+    "PASSWORD_PLACEHOLDER": "Şifre",
+    "LOGIN_BUTTON": "GİRİŞ YAP",
+    "NO_ACCOUNT": "Hesabınız yok mu? Kayıt Olun",
+    "VALIDATION": {
+      "EMAIL_REQUIRED": "E-posta gereklidir.",
+      "EMAIL_INVALID": "Geçersiz e-posta formatı.",
+      "PASSWORD_REQUIRED": "Şifre gereklidir.",
+      "PASSWORD_MIN_LENGTH": "En az 6 karakter olmalıdır."
+    },
+    "ERRORS": {
+      "INVALID_CREDENTIALS": "Geçersiz e-posta veya şifre.",
+      "GENERAL": "Bir hata oluştu. Lütfen tekrar deneyin."
+    }
+  },
+  "REGISTER": {
+    "TITLE": "Hesap Oluştur",
+    "USERNAME": "Kullanıcı Adı",
+    "EMAIL": "E-posta",
+    "PASSWORD": "Şifre",
+    "CONFIRM_PASSWORD": "Şifre Tekrar",
+    "USERNAME_PLACEHOLDER": "Kullanıcı Adı",
+    "EMAIL_PLACEHOLDER": "E-posta",
+    "PASSWORD_PLACEHOLDER": "Şifre",
+    "CONFIRM_PASSWORD_PLACEHOLDER": "Şifre Tekrar",
+    "REGISTER_BUTTON": "KAYIT OL",
+    "HAVE_ACCOUNT": "Zaten hesabınız var mı? Giriş Yapın",
+    "SUCCESS": "Kayıt başarılı! Hoş geldiniz.",
+    "VALIDATION": {
+      "USERNAME_REQUIRED": "Gerekli.",
+      "USERNAME_MIN_LENGTH": "En az 3 karakter.",
+      "EMAIL_REQUIRED": "Gerekli.",
+      "EMAIL_INVALID": "Geçersiz format.",
+      "PASSWORD_REQUIRED": "Gerekli.",
+      "PASSWORD_MIN_LENGTH": "En az 6 karakter.",
+      "CONFIRM_PASSWORD_REQUIRED": "Gerekli.",
+      "PASSWORD_NOT_MATCH": "Şifreler eşleşmiyor."
+    },
+    "ERRORS": {
+      "REGISTRATION_FAILED": "Kayıt başarısız. E-posta veya kullanıcı adı zaten kullanımda olabilir.",
+      "GENERAL": "Bir hata oluştu. Lütfen tekrar deneyin."
+    }
+  },
+  "NOTES": {
+    "TITLE": "Notlarınız",
+    "COUNT": "Notlarınız ({{count}})",
+    "ADD_NEW": "Yeni Not Ekle",
+    "EDIT": "Notu Düzenle",
+    "TITLE_PLACEHOLDER": "Not Başlığı (Zorunlu)",
+    "CONTENT_PLACEHOLDER": "Not İçeriği (Zorunlu)",
+    "SAVE": "Notu Kaydet",
+    "UPDATE": "Kaydet ve Güncelle",
+    "CANCEL_EDIT": "Düzenlemeyi İptal Et",
+    "SEARCH_PLACEHOLDER": "Ara: Başlık veya içerik...",
+    "NO_NOTES": "Henüz hiç notunuz yok. Yeni bir tane ekleyin!",
+    "NO_SEARCH_RESULTS": "Aradığınız kriterlere uygun not bulunamadı.",
+    "CREATED_AT": "Eklenme Tarihi",
+    "DRAG_HINT": "Sürükle",
+    "EDIT_HINT": "Notu Düzenle",
+    "COMPLETE_HINT": "Tamamlandı Olarak İşaretle",
+    "UNDO_HINT": "Tekrar Beklemeye Al",
+    "DELETE_HINT": "Notu Sil",
+    "MOBILE_HEADING": "Notlarınız"
+  },
+  "CONFIRM": {
+    "DELETE_MESSAGE": "Seçili notu silmek istediğinizden emin misiniz?",
+    "YES_DELETE": "Evet, Sil",
+    "NO": "Hayır"
+  },
+  "VALIDATION": {
+    "TITLE_CONTENT_REQUIRED": "Lütfen hem başlık hem de içerik giriniz."
+  },
+  "ERRORS": {
+    "LOAD_NOTES": "Notlar yüklenemedi. Giriş yapmış olmanız gerekebilir.",
+    "UPDATE_NOTE": "Not güncellenemedi. Lütfen tekrar deneyin.",
+    "ADD_NOTE": "Not kaydedilemedi. Lütfen tekrar deneyin.",
+    "DELETE_NOTE": "Not silinemedi. Lütfen tekrar deneyin.",
+    "TOGGLE_STATUS": "Not durumu güncellenemedi. Lütfen tekrar deneyin."
+  }
+}

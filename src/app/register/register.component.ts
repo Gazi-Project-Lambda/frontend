@@ -1,15 +1,20 @@
-// src/app/register/register.component.ts
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { CommonModule } from '@angular/common'; 
 import { RouterLink, Router } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../services/auth.service';
 import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-register',
   standalone: true, 
-  imports: [ReactiveFormsModule, CommonModule, RouterLink],
+  imports: [
+    ReactiveFormsModule, 
+    CommonModule, 
+    RouterLink,
+    TranslateModule
+  ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
@@ -17,18 +22,32 @@ export class RegisterComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
   private formBuilder = inject(FormBuilder);
+  public translate = inject(TranslateService);
 
   registerForm!: FormGroup; 
   loading: boolean = false;
   submitted: boolean = false;
+  currentLang: string = 'tr';  // Dil için değişken
 
   ngOnInit(): void {
+    // Mevcut dili al
+    const savedLang = localStorage.getItem('app-language') || 'tr';
+    this.translate.use(savedLang);
+    this.currentLang = savedLang;
+
     this.registerForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required]
     }, { validators: this.passwordMatchValidator });
+  }
+
+  // Dil değiştirme fonksiyonu
+  switchLanguage(lang: string): void {
+    this.translate.use(lang);
+    this.currentLang = lang;
+    localStorage.setItem('app-language', lang);
   }
 
   passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
@@ -38,7 +57,9 @@ export class RegisterComponent implements OnInit {
     return password.value !== confirmPassword.value ? { matching: true } : null;
   }
 
-  get f(): { [key: string]: AbstractControl } { return this.registerForm.controls; }
+  get f(): { [key: string]: AbstractControl } { 
+    return this.registerForm.controls; 
+  }
 
   onSubmit(): void {
     this.submitted = true;
@@ -50,14 +71,17 @@ export class RegisterComponent implements OnInit {
       finalize(() => this.loading = false)
     ).subscribe({
       next: () => {
-        // The user is now logged in automatically! Navigate them to the notes page.
-        alert('Registration successful! Welcome.');
+        this.translate.get('REGISTER.SUCCESS').subscribe((text: string) => {
+          alert(text);
+        });
         this.router.navigate(['/notes']);
       },
       error: (err) => {
         console.error(err);
-        const errorMessage = err.error?.message || 'Registration failed. The email or username may already be in use.';
-        alert(errorMessage);
+        this.translate.get('REGISTER.ERRORS.REGISTRATION_FAILED').subscribe((text: string) => {
+          const errorMessage = err.error?.message || text;
+          alert(errorMessage);
+        });
       }
     });
   }

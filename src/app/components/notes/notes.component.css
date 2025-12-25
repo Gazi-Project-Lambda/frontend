@@ -1,14 +1,9 @@
 :host {
     display: block;
     font-family: 'Poppins', sans-serif;
-    /* The body background will handle the gradient, but we can set a fallback */
     background-color: #f7f7f7; 
 }
 
-/* 
-  STEP 1: Define the main container's size and make it a flexbox column.
-  This is the most important change. It creates a fixed-height "box" for our layout.
-*/
 .notes-container {
     max-width: 1200px;
     width: 90vw;
@@ -17,17 +12,14 @@
     background: white;
     border-radius: 20px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-
-    /* --- NEW FLEXBOX LAYOUT --- */
     display: flex;
     flex-direction: column;
-    height: 85vh; /* Set a fixed height for the whole component */
-    max-height: 800px; /* Optional: prevent it from being too tall on large screens */
+    height: 85vh;
+    max-height: 800px;
 }
 
-/* STEP 2: Make sure the header doesn't grow or shrink */
 header {
-    flex-shrink: 0; /* Prevents the header from shrinking */
+    flex-shrink: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -40,6 +32,41 @@ header h1 {
     font-size: 1.8rem;
     color: #444;
     font-weight: 700;
+}
+
+/* Header Actions Container - Dil Butonları ve Logout */
+.header-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+/* Dil Değiştirme Butonları */
+.language-switcher {
+    display: flex;
+    gap: 8px;
+}
+
+.lang-btn {
+    padding: 6px 12px;
+    border: 2px solid #ddd;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.lang-btn:hover {
+    background: #f0f0f0;
+    transform: translateY(-1px);
+}
+
+.lang-btn.active {
+    background: linear-gradient(to right, #fa538d, #89379c);
+    color: white;
+    border-color: transparent;
 }
 
 .logout-btn {
@@ -58,37 +85,25 @@ header h1 {
     transform: translateY(-1px);
 }
 
-/* 
-  STEP 3: Allow the main grid content to grow and fill the remaining space.
-  Crucially, `overflow: hidden` tells the grid to not exceed this space.
-*/
 .main-content {
-    flex-grow: 1; /* This makes the grid area fill the available vertical space */
+    flex-grow: 1;
     display: grid;
     grid-template-columns: 40% 60%; 
     gap: 30px;
-    overflow: hidden; /* This is essential for the child scrolling to work */
+    overflow: hidden;
 }
 
-/* SOL SÜTUN: Form Alanı */
 .note-form-area {
     padding: 0 10px;
 }
 
-/* 
-  STEP 4: Make the notes list scroll within its given space.
-  The height is no longer needed because its parent grid now has a defined height.
-*/
 .notes-list-wrapper {
-    overflow-y: auto; /* This will now create a scrollbar when content overflows */
+    overflow-y: auto;
     padding-right: 15px;
     border-left: 1px solid #f0f0f0; 
     padding-left: 25px;
 }
 
-/* --- ALL OTHER STYLES BELOW REMAIN THE SAME --- */
-
-/* Not Ekleme Formu Stilleri */
 .note-add-form h2 {
     font-size: 1.4rem;
     color: #555;
@@ -302,7 +317,6 @@ hr {
     border: 1px dashed #ddd;
     border-radius: 10px;
     color: #999;
-    font-style: italic;
 }
 
 .confirmation-popup {
@@ -410,29 +424,36 @@ hr {
     color: #999;
 }
 
-/* --- RESPONSIVE STYLES --- */
-
 .mobile-notes-heading {
     display: none; 
 }
 
+/* RESPONSIVE STYLES */
 @media (max-width: 992px) {
     .notes-container {
-      height: auto; /* Allow height to be determined by content on mobile */
-      margin: 10px;
-      padding: 15px;
+        height: auto;
+        margin: 10px;
+        padding: 15px;
     }
+    
     .main-content {
         grid-template-columns: 1fr;
         gap: 0;
-        overflow: visible; /* Allow content to flow naturally */
+        overflow: visible;
     }
+    
     header {
         flex-direction: column;
         align-items: flex-start;
     }
+    
     header h1 {
         margin-bottom: 15px;
+    }
+    
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
     }
 
     .notes-list-wrapper {
