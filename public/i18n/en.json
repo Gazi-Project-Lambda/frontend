@@ -1,0 +1,89 @@
+{
+  "APP": {
+    "TITLE": "Notesy - Your Notebook",
+    "LOGOUT": "Logout"
+  },
+  "LOGIN": {
+    "TITLE": "User Login",
+    "EMAIL": "Email",
+    "PASSWORD": "Password",
+    "EMAIL_PLACEHOLDER": "Email",
+    "PASSWORD_PLACEHOLDER": "Password",
+    "LOGIN_BUTTON": "LOGIN",
+    "NO_ACCOUNT": "Don't have an account? Sign Up",
+    "VALIDATION": {
+      "EMAIL_REQUIRED": "Email is required.",
+      "EMAIL_INVALID": "Invalid email format.",
+      "PASSWORD_REQUIRED": "Password is required.",
+      "PASSWORD_MIN_LENGTH": "Must be at least 6 characters."
+    },
+    "ERRORS": {
+      "INVALID_CREDENTIALS": "Invalid email or password.",
+      "GENERAL": "An error occurred. Please try again."
+    }
+  },
+  "REGISTER": {
+    "TITLE": "Create Account",
+    "USERNAME": "Username",
+    "EMAIL": "Email",
+    "PASSWORD": "Password",
+    "CONFIRM_PASSWORD": "Confirm Password",
+    "USERNAME_PLACEHOLDER": "Username",
+    "EMAIL_PLACEHOLDER": "Email",
+    "PASSWORD_PLACEHOLDER": "Password",
+    "CONFIRM_PASSWORD_PLACEHOLDER": "Confirm Password",
+    "REGISTER_BUTTON": "SIGN UP",
+    "HAVE_ACCOUNT": "Already have an account? Sign In",
+    "SUCCESS": "Registration successful! Welcome.",
+    "VALIDATION": {
+      "USERNAME_REQUIRED": "Required.",
+      "USERNAME_MIN_LENGTH": "At least 3 characters.",
+      "EMAIL_REQUIRED": "Required.",
+      "EMAIL_INVALID": "Invalid format.",
+      "PASSWORD_REQUIRED": "Required.",
+      "PASSWORD_MIN_LENGTH": "At least 6 characters.",
+      "CONFIRM_PASSWORD_REQUIRED": "Required.",
+      "PASSWORD_NOT_MATCH": "Passwords don't match."
+    },
+    "ERRORS": {
+      "REGISTRATION_FAILED": "Registration failed. The email or username may already be in use.",
+      "GENERAL": "An error occurred. Please try again."
+    }
+  },
+  "NOTES": {
+    "TITLE": "Your Notes",
+    "COUNT": "Your Notes ({{count}})",
+    "ADD_NEW": "Add New Note",
+    "EDIT": "Edit Note",
+    "TITLE_PLACEHOLDER": "Note Title (Required)",
+    "CONTENT_PLACEHOLDER": "Note Content (Required)",
+    "SAVE": "Save Note",
+    "UPDATE": "Save and Update",
+    "CANCEL_EDIT": "Cancel Edit",
+    "SEARCH_PLACEHOLDER": "Search: Title or content...",
+    "NO_NOTES": "You don't have any notes yet. Add a new one!",
+    "NO_SEARCH_RESULTS": "No notes found matching your search criteria.",
+    "CREATED_AT": "Created At",
+    "DRAG_HINT": "Drag",
+    "EDIT_HINT": "Edit Note",
+    "COMPLETE_HINT": "Mark as Completed",
+    "UNDO_HINT": "Mark as Pending",
+    "DELETE_HINT": "Delete Note",
+    "MOBILE_HEADING": "Your Notes"
+  },
+  "CONFIRM": {
+    "DELETE_MESSAGE": "Are you sure you want to delete the selected note?",
+    "YES_DELETE": "Yes, Delete",
+    "NO": "No"
+  },
+  "VALIDATION": {
+    "TITLE_CONTENT_REQUIRED": "Please enter both title and content."
+  },
+  "ERRORS": {
+    "LOAD_NOTES": "Could not load notes. You may be logged out.",
+    "UPDATE_NOTE": "Failed to update the note. Please try again.",
+    "ADD_NOTE": "Failed to save the note. Please try again.",
+    "DELETE_NOTE": "Failed to delete the note. Please try again.",
+    "TOGGLE_STATUS": "Failed to update the note status. Please try again."
+  }
+}

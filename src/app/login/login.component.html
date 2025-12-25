@@ -1,4 +1,22 @@
 <div class="container">
+  <!-- Dil Değiştirme Butonları -->
+  <div class="language-switcher">
+    <button 
+      (click)="switchLanguage('tr')" 
+      [class.active]="currentLang === 'tr'"
+      class="lang-btn"
+      type="button">
+      TR
+    </button>
+    <button 
+      (click)="switchLanguage('en')" 
+      [class.active]="currentLang === 'en'"
+      class="lang-btn"
+      type="button">
+      EN
+    </button>
+  </div>
+
   <!-- Left Side Design -->
   <div class="design">
     <div class="pill-1 rotate-45"></div>
@@ -9,23 +27,27 @@
 
   <!-- Right Side Login Form -->
   <div class="login">
-    <h3 class="title">User Login</h3>
+    <h3 class="title">{{ 'LOGIN.TITLE' | translate }}</h3>
     
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       
-      <!-- Email Input (was Username) -->
+      <!-- Email Input -->
       <div class="text-input" [class.error-border]="submitted && f['email'].errors">
         <i class="ri-mail-fill"></i>
         <input 
           id="email" 
           type="email" 
           formControlName="email" 
-          placeholder="Email"
+          [placeholder]="'LOGIN.EMAIL_PLACEHOLDER' | translate"
         />
       </div>
       <div *ngIf="submitted && f['email'].errors" class="error-text">
-        <small *ngIf="f['email'].errors['required']">Email is required.</small>
-        <small *ngIf="f['email'].errors['email']">Invalid email format.</small>
+        <small *ngIf="f['email'].errors['required']">
+          {{ 'LOGIN.VALIDATION.EMAIL_REQUIRED' | translate }}
+        </small>
+        <small *ngIf="f['email'].errors['email']">
+          {{ 'LOGIN.VALIDATION.EMAIL_INVALID' | translate }}
+        </small>
       </div>
       
       <!-- Password Input -->
@@ -35,12 +57,16 @@
           id="password" 
           type="password" 
           formControlName="password" 
-          placeholder="Password"
+          [placeholder]="'LOGIN.PASSWORD_PLACEHOLDER' | translate"
         />
       </div>
       <div *ngIf="submitted && f['password'].errors" class="error-text">
-        <small *ngIf="f['password'].errors['required']">Password is required.</small>
-        <small *ngIf="f['password'].errors['minlength']">Must be at least 6 characters.</small>
+        <small *ngIf="f['password'].errors['required']">
+          {{ 'LOGIN.VALIDATION.PASSWORD_REQUIRED' | translate }}
+        </small>
+        <small *ngIf="f['password'].errors['minlength']">
+          {{ 'LOGIN.VALIDATION.PASSWORD_MIN_LENGTH' | translate }}
+        </small>
       </div>
 
       <div *ngIf="errorMessage" class="error-text general-error">
@@ -49,10 +75,12 @@
 
       <button [disabled]="loading" class="login-btn">
         <span *ngIf="loading" class="spinner"></span>
-        LOGIN
+        {{ 'LOGIN.LOGIN_BUTTON' | translate }}
       </button>
 
-      <a routerLink="/register" class="forgot">Don't have an account? Sign Up</a>
+      <a routerLink="/register" class="forgot">
+        {{ 'LOGIN.NO_ACCOUNT' | translate }}
+      </a>
     </form>
   </div>
 </div>

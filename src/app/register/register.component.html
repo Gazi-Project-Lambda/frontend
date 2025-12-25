@@ -1,5 +1,23 @@
 <div class="container">
-  <!-- Left Side Design -->
+  <!-- Dil Değiştirme Butonları -->
+  <div class="language-switcher">
+    <button 
+      (click)="switchLanguage('tr')" 
+      [class.active]="currentLang === 'tr'"
+      class="lang-btn"
+      type="button">
+      TR
+    </button>
+    <button 
+      (click)="switchLanguage('en')" 
+      [class.active]="currentLang === 'en'"
+      class="lang-btn"
+      type="button">
+      EN
+    </button>
+  </div>
+
+  <!-- Rest of the template... -->
   <div class="design">
     <div class="pill-1 rotate-45"></div>
     <div class="pill-2 rotate-45"></div>
@@ -7,58 +25,91 @@
     <div class="pill-4 rotate-45"></div>
   </div>
 
-  <!-- Right Side Register Form -->
-  <div class="login"> <!-- Keeping class 'login' for shared CSS styles -->
-    <h3 class="title">Hesap Oluştur</h3>
+  <div class="login">
+    <h3 class="title">{{ 'REGISTER.TITLE' | translate }}</h3>
     
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       
       <!-- Username -->
       <div class="text-input" [class.error-border]="submitted && f['username'].errors">
         <i class="ri-user-fill"></i>
-        <input type="text" formControlName="username" placeholder="Kullanıcı Adı" />
+        <input 
+          type="text" 
+          formControlName="username" 
+          [placeholder]="'REGISTER.USERNAME_PLACEHOLDER' | translate" 
+        />
       </div>
       <div *ngIf="submitted && f['username'].errors" class="error-text">
-        <small *ngIf="f['username'].errors['required']">Gerekli.</small>
-        <small *ngIf="f['username'].errors['minlength']">En az 3 karakter.</small>
+        <small *ngIf="f['username'].errors['required']">
+          {{ 'REGISTER.VALIDATION.USERNAME_REQUIRED' | translate }}
+        </small>
+        <small *ngIf="f['username'].errors['minlength']">
+          {{ 'REGISTER.VALIDATION.USERNAME_MIN_LENGTH' | translate }}
+        </small>
       </div>
 
       <!-- Email -->
       <div class="text-input" [class.error-border]="submitted && f['email'].errors">
         <i class="ri-mail-fill"></i>
-        <input type="email" formControlName="email" placeholder="E-posta" />
+        <input 
+          type="email" 
+          formControlName="email" 
+          [placeholder]="'REGISTER.EMAIL_PLACEHOLDER' | translate" 
+        />
       </div>
       <div *ngIf="submitted && f['email'].errors" class="error-text">
-        <small *ngIf="f['email'].errors['required']">Gerekli.</small>
-        <small *ngIf="f['email'].errors['email']">Geçersiz format.</small>
+        <small *ngIf="f['email'].errors['required']">
+          {{ 'REGISTER.VALIDATION.EMAIL_REQUIRED' | translate }}
+        </small>
+        <small *ngIf="f['email'].errors['email']">
+          {{ 'REGISTER.VALIDATION.EMAIL_INVALID' | translate }}
+        </small>
       </div>
       
       <!-- Password -->
       <div class="text-input" [class.error-border]="submitted && f['password'].errors">
         <i class="ri-lock-fill"></i>
-        <input type="password" formControlName="password" placeholder="Şifre" />
+        <input 
+          type="password" 
+          formControlName="password" 
+          [placeholder]="'REGISTER.PASSWORD_PLACEHOLDER' | translate" 
+        />
       </div>
       <div *ngIf="submitted && f['password'].errors" class="error-text">
-        <small *ngIf="f['password'].errors['required']">Gerekli.</small>
-        <small *ngIf="f['password'].errors['minlength']">En az 6 karakter.</small>
+        <small *ngIf="f['password'].errors['required']">
+          {{ 'REGISTER.VALIDATION.PASSWORD_REQUIRED' | translate }}
+        </small>
+        <small *ngIf="f['password'].errors['minlength']">
+          {{ 'REGISTER.VALIDATION.PASSWORD_MIN_LENGTH' | translate }}
+        </small>
       </div>
 
       <!-- Confirm Password -->
       <div class="text-input" [class.error-border]="submitted && f['confirmPassword'].errors">
         <i class="ri-lock-password-fill"></i>
-        <input type="password" formControlName="confirmPassword" placeholder="Şifre Tekrar" />
+        <input 
+          type="password" 
+          formControlName="confirmPassword" 
+          [placeholder]="'REGISTER.CONFIRM_PASSWORD_PLACEHOLDER' | translate" 
+        />
       </div>
       <div *ngIf="submitted && f['confirmPassword'].errors" class="error-text">
-        <small *ngIf="f['confirmPassword'].errors['required']">Gerekli.</small>
-        <small *ngIf="f['confirmPassword'].errors['matching']">Eşleşmiyor.</small>
+        <small *ngIf="f['confirmPassword'].errors['required']">
+          {{ 'REGISTER.VALIDATION.CONFIRM_PASSWORD_REQUIRED' | translate }}
+        </small>
+      </div>
+      <div *ngIf="submitted && registerForm.errors?.['matching']" class="error-text">
+        <small>{{ 'REGISTER.VALIDATION.PASSWORD_NOT_MATCH' | translate }}</small>
       </div>
 
       <button [disabled]="loading" class="login-btn">
         <span *ngIf="loading" class="spinner"></span>
-        KAYIT OL
+        {{ 'REGISTER.REGISTER_BUTTON' | translate }}
       </button>
 
-      <a routerLink="/login" class="forgot">Zaten hesabınız var mı? Giriş Yapın</a>
+      <a routerLink="/login" class="forgot">
+        {{ 'REGISTER.HAVE_ACCOUNT' | translate }}
+      </a>
     </form>
   </div>
 </div>

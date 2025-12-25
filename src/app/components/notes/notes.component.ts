@@ -1,16 +1,23 @@
 // src/app/components/notes/notes.component.ts
-import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core'; // <-- Import ChangeDetectorRef
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms'; 
 import { DragDropModule, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../services/auth.service';
 import { NotesService, Note } from '../../services/notes.service';
 
 @Component({
   selector: 'app-notes',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, DragDropModule, FormsModule], 
+  imports: [
+    CommonModule, 
+    ReactiveFormsModule, 
+    DragDropModule, 
+    FormsModule,
+    TranslateModule
+  ], 
   templateUrl: './notes.component.html',
   styleUrls: ['./notes.component.css']
 })
@@ -20,7 +27,8 @@ export class NotesComponent implements OnInit {
   private notesService = inject(NotesService);
   private router = inject(Router);
   private formBuilder = inject(FormBuilder); 
-  private cdr = inject(ChangeDetectorRef); // <-- Inject ChangeDetectorRef
+  private cdr = inject(ChangeDetectorRef);
+  public translate = inject(TranslateService);
 
   notes: Note[] = [];
   noteForm!: FormGroup; 
@@ -28,6 +36,7 @@ export class NotesComponent implements OnInit {
   noteToDeleteId: number | null = null; 
   editingNoteId: number | null = null;
   searchQuery: string = '';
+  currentLang: string = 'tr'; // Dil değişkeni eklendi
 
   get displayNotes(): Note[] {
     if (!this.searchQuery || this.searchQuery.trim() === '') {
@@ -43,11 +52,15 @@ export class NotesComponent implements OnInit {
   drop(event: CdkDragDrop<Note[]>): void {
     if (this.searchQuery.trim() === '') {
         moveItemInArray(this.notes, event.previousIndex, event.currentIndex);
-        // Note: Real backend reordering requires updating 'order' fields in DB
     }
   }
 
   ngOnInit(): void {
+    // Mevcut dili al
+    const savedLang = localStorage.getItem('app-language') || 'tr';
+    this.translate.use(savedLang);
+    this.currentLang = savedLang;
+
     this.loadNotes();
     this.noteForm = this.formBuilder.group({
       title: ['', Validators.required],
@@ -55,15 +68,24 @@ export class NotesComponent implements OnInit {
     });
   }
 
+  // Dil değiştirme fonksiyonu
+  switchLanguage(lang: string): void {
+    this.translate.use(lang);
+    this.currentLang = lang;
+    localStorage.setItem('app-language', lang);
+  }
+
   loadNotes(): void {
     this.notesService.getNotes().subscribe({
       next: (notes) => {
         this.notes = notes;
-        this.cdr.detectChanges(); // <-- Manually trigger change detection
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('❌ NotesComponent: Failed to load notes.', err);
-        alert('Could not load notes. You may be logged out.');
+        this.translate.get('ERRORS.LOAD_NOTES').subscribe((text: string) => {
+          alert(text);
+        });
         this.router.navigate(['/login']);
       }
     });
@@ -76,11 +98,13 @@ export class NotesComponent implements OnInit {
         if (foundNote) {
           foundNote.isCompleted = !foundNote.isCompleted;
         }
-        this.cdr.detectChanges(); // <-- Manually trigger change detection
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('❌ NotesComponent: Failed to toggle note completion.', err);
-        alert('Failed to update the note status. Please try again.');
+        this.translate.get('ERRORS.TOGGLE_STATUS').subscribe((text: string) => {
+          alert(text);
+        });
       }
     });
   }
@@ -88,7 +112,9 @@ export class NotesComponent implements OnInit {
   onSubmitNote(): void {
     console.log('📄 NotesComponent: onSubmitNote triggered.');
     if (this.noteForm.invalid) {
-      alert('Lütfen hem başlık hem de içerik giriniz.'); 
+      this.translate.get('VALIDATION.TITLE_CONTENT_REQUIRED').subscribe((text: string) => {
+        alert(text);
+      });
       return;
     }
     
@@ -101,12 +127,14 @@ export class NotesComponent implements OnInit {
           this.notesService.updateNote(updatedNote).subscribe({
              next: () => {
                 console.log('👍 NotesComponent: Update successful. Reloading notes.');
-                this.loadNotes(); // loadNotes already calls detectChanges
+                this.loadNotes();
                 this.cancelEdit();
              },
              error: (err) => {
                console.error('❌ NotesComponent: Failed to update note.', err);
-               alert('Failed to update the note. Please try again.');
+               this.translate.get('ERRORS.UPDATE_NOTE').subscribe((text: string) => {
+                 alert(text);
+               });
              }
           });
         }
@@ -114,12 +142,14 @@ export class NotesComponent implements OnInit {
         this.notesService.addNote(title, content).subscribe({
           next: (addedNote) => {
             console.log('👍 NotesComponent: Add note successful. Reloading notes.', addedNote);
-            this.loadNotes(); // loadNotes already calls detectChanges
+            this.loadNotes();
             this.noteForm.reset();
           },
           error: (err) => {
             console.error('❌ NotesComponent: Failed to add note.', err);
-            alert('Failed to save the note. Please try again.');
+            this.translate.get('ERRORS.ADD_NOTE').subscribe((text: string) => {
+              alert(text);
+            });
           }
         });
     }
@@ -145,17 +175,19 @@ export class NotesComponent implements OnInit {
 
   confirmDelete(): void {
     if (this.noteToDeleteId !== null) {
-      const idToDelete = this.noteToDeleteId; // Store before resetting
+      const idToDelete = this.noteToDeleteId;
       this.notesService.deleteNote(idToDelete).subscribe({
         next: () => {
           console.log(`👍 NotesComponent: Deleted note id: ${idToDelete}. Reloading notes.`);
           this.noteToDeleteId = null;
           this.showConfirmMessage = false;
-          this.loadNotes(); // loadNotes already calls detectChanges
+          this.loadNotes();
         },
         error: (err) => {
           console.error('❌ NotesComponent: Failed to delete note.', err);
-          alert('Failed to delete the note. Please try again.');
+          this.translate.get('ERRORS.DELETE_NOTE').subscribe((text: string) => {
+            alert(text);
+          });
           this.noteToDeleteId = null;
           this.showConfirmMessage = false;
         }
