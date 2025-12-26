@@ -1,0 +1,91 @@
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000; /* High z-index to appear on top of everything */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: none; /* Let clicks pass through container area */
+}
+
+.toast-card {
+  pointer-events: all; /* Re-enable clicks on the card itself */
+  min-width: 300px;
+  max-width: 400px;
+  background: white;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  animation: slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  cursor: pointer;
+  border-left: 6px solid transparent;
+  transition: transform 0.2s ease;
+}
+
+.toast-card:hover {
+  transform: translateX(-5px);
+}
+
+/* Variants */
+.toast-card.success {
+  border-left-color: #2ecc71;
+}
+.toast-card.success .icon-area {
+  color: #2ecc71;
+}
+
+.toast-card.error {
+  border-left-color: #e74c3c;
+}
+.toast-card.error .icon-area {
+  color: #e74c3c;
+}
+
+.toast-card.info {
+  border-left-color: #3498db;
+}
+.toast-card.info .icon-area {
+  color: #3498db;
+}
+
+.icon-area {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.message-area {
+  flex-grow: 1;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  color: #333;
+  line-height: 1.4;
+}
+
+.close-btn {
+  color: #ccc;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.toast-card:hover .close-btn {
+  color: #888;
+}
+
+@keyframes slideInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

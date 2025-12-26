@@ -1,4 +1,3 @@
-// src/app/components/notes/notes.component.ts
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -7,6 +6,7 @@ import { DragDropModule, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../services/auth.service';
 import { NotesService, Note } from '../../services/notes.service';
+import { ToastService } from '../../services/toast.service'; // Import
 
 @Component({
   selector: 'app-notes',
@@ -29,6 +29,7 @@ export class NotesComponent implements OnInit {
   private formBuilder = inject(FormBuilder); 
   private cdr = inject(ChangeDetectorRef);
   public translate = inject(TranslateService);
+  private toastService = inject(ToastService); // Inject
 
   notes: Note[] = [];
   noteForm!: FormGroup; 
@@ -36,7 +37,7 @@ export class NotesComponent implements OnInit {
   noteToDeleteId: number | null = null; 
   editingNoteId: number | null = null;
   searchQuery: string = '';
-  currentLang: string = 'tr'; // Dil değişkeni eklendi
+  currentLang: string = 'tr';
 
   get displayNotes(): Note[] {
     if (!this.searchQuery || this.searchQuery.trim() === '') {
@@ -56,7 +57,6 @@ export class NotesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Mevcut dili al
     const savedLang = localStorage.getItem('app-language') || 'tr';
     this.translate.use(savedLang);
     this.currentLang = savedLang;
@@ -68,7 +68,6 @@ export class NotesComponent implements OnInit {
     });
   }
 
-  // Dil değiştirme fonksiyonu
   switchLanguage(lang: string): void {
     this.translate.use(lang);
     this.currentLang = lang;
@@ -84,7 +83,7 @@ export class NotesComponent implements OnInit {
       error: (err) => {
         console.error('❌ NotesComponent: Failed to load notes.', err);
         this.translate.get('ERRORS.LOAD_NOTES').subscribe((text: string) => {
-          alert(text);
+          this.toastService.show(text, 'error'); // Toast
         });
         this.router.navigate(['/login']);
       }
@@ -99,21 +98,26 @@ export class NotesComponent implements OnInit {
           foundNote.isCompleted = !foundNote.isCompleted;
         }
         this.cdr.detectChanges();
+        // Toast based on new status
+        if (note.isCompleted) {
+           this.toastService.show('Note marked as completed', 'success');
+        } else {
+           this.toastService.show('Note marked as pending', 'info');
+        }
       },
       error: (err) => {
         console.error('❌ NotesComponent: Failed to toggle note completion.', err);
         this.translate.get('ERRORS.TOGGLE_STATUS').subscribe((text: string) => {
-          alert(text);
+          this.toastService.show(text, 'error'); // Toast
         });
       }
     });
   }
 
   onSubmitNote(): void {
-    console.log('📄 NotesComponent: onSubmitNote triggered.');
     if (this.noteForm.invalid) {
       this.translate.get('VALIDATION.TITLE_CONTENT_REQUIRED').subscribe((text: string) => {
-        alert(text);
+        this.toastService.show(text, 'error'); // Toast
       });
       return;
     }
@@ -126,14 +130,14 @@ export class NotesComponent implements OnInit {
           const updatedNote = { ...existing, title, content };
           this.notesService.updateNote(updatedNote).subscribe({
              next: () => {
-                console.log('👍 NotesComponent: Update successful. Reloading notes.');
                 this.loadNotes();
                 this.cancelEdit();
+                this.toastService.show('Note updated successfully', 'success'); // Toast
              },
              error: (err) => {
                console.error('❌ NotesComponent: Failed to update note.', err);
                this.translate.get('ERRORS.UPDATE_NOTE').subscribe((text: string) => {
-                 alert(text);
+                 this.toastService.show(text, 'error'); // Toast
                });
              }
           });
@@ -141,14 +145,14 @@ export class NotesComponent implements OnInit {
     } else {
         this.notesService.addNote(title, content).subscribe({
           next: (addedNote) => {
-            console.log('👍 NotesComponent: Add note successful. Reloading notes.', addedNote);
             this.loadNotes();
             this.noteForm.reset();
+            this.toastService.show('Note created successfully', 'success'); // Toast
           },
           error: (err) => {
             console.error('❌ NotesComponent: Failed to add note.', err);
             this.translate.get('ERRORS.ADD_NOTE').subscribe((text: string) => {
-              alert(text);
+              this.toastService.show(text, 'error'); // Toast
             });
           }
         });
@@ -161,6 +165,7 @@ export class NotesComponent implements OnInit {
         title: note.title,
         content: note.content
     });
+    this.toastService.show('Editing note...', 'info'); // Toast
   }
 
   initiateDelete(id: number): void { 
@@ -178,15 +183,15 @@ export class NotesComponent implements OnInit {
       const idToDelete = this.noteToDeleteId;
       this.notesService.deleteNote(idToDelete).subscribe({
         next: () => {
-          console.log(`👍 NotesComponent: Deleted note id: ${idToDelete}. Reloading notes.`);
           this.noteToDeleteId = null;
           this.showConfirmMessage = false;
           this.loadNotes();
+          this.toastService.show('Note deleted successfully', 'success'); // Toast
         },
         error: (err) => {
           console.error('❌ NotesComponent: Failed to delete note.', err);
           this.translate.get('ERRORS.DELETE_NOTE').subscribe((text: string) => {
-            alert(text);
+            this.toastService.show(text, 'error'); // Toast
           });
           this.noteToDeleteId = null;
           this.showConfirmMessage = false;
@@ -202,6 +207,7 @@ export class NotesComponent implements OnInit {
 
   logout(): void {
     this.authService.logout(); 
+    this.toastService.show('Logged out successfully', 'info'); // Toast
     this.router.navigate(['/login']); 
   }
 }

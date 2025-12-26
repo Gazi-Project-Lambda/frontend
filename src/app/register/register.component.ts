@@ -5,6 +5,7 @@ import { RouterLink, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../services/auth.service';
 import { finalize } from 'rxjs/operators';
+import { ToastService } from '../services/toast.service'; // Import
 
 @Component({
   selector: 'app-register',
@@ -23,14 +24,14 @@ export class RegisterComponent implements OnInit {
   private router = inject(Router);
   private formBuilder = inject(FormBuilder);
   public translate = inject(TranslateService);
+  private toastService = inject(ToastService); // Inject
 
   registerForm!: FormGroup; 
   loading: boolean = false;
   submitted: boolean = false;
-  currentLang: string = 'tr';  // Dil için değişken
+  currentLang: string = 'tr';
 
   ngOnInit(): void {
-    // Mevcut dili al
     const savedLang = localStorage.getItem('app-language') || 'tr';
     this.translate.use(savedLang);
     this.currentLang = savedLang;
@@ -43,7 +44,6 @@ export class RegisterComponent implements OnInit {
     }, { validators: this.passwordMatchValidator });
   }
 
-  // Dil değiştirme fonksiyonu
   switchLanguage(lang: string): void {
     this.translate.use(lang);
     this.currentLang = lang;
@@ -72,7 +72,7 @@ export class RegisterComponent implements OnInit {
     ).subscribe({
       next: () => {
         this.translate.get('REGISTER.SUCCESS').subscribe((text: string) => {
-          alert(text);
+          this.toastService.show(text, 'success'); // Toast
         });
         this.router.navigate(['/notes']);
       },
@@ -80,7 +80,7 @@ export class RegisterComponent implements OnInit {
         console.error(err);
         this.translate.get('REGISTER.ERRORS.REGISTRATION_FAILED').subscribe((text: string) => {
           const errorMessage = err.error?.message || text;
-          alert(errorMessage);
+          this.toastService.show(errorMessage, 'error'); // Toast
         });
       }
     });
