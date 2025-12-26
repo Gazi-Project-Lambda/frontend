@@ -5,6 +5,7 @@ import { Router, RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../services/auth.service';
 import { finalize } from 'rxjs/operators';
+import { ToastService } from '../services/toast.service'; // Import
 
 @Component({
   selector: 'app-login',
@@ -23,15 +24,15 @@ export class LoginComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
   public translate = inject(TranslateService);
+  private toastService = inject(ToastService); // Inject
 
   loginForm!: FormGroup; 
   loading: boolean = false;
   submitted: boolean = false;
   errorMessage: string = '';
-  currentLang: string = 'tr';  // Dil için değişken ekledik
+  currentLang: string = 'tr';
 
   ngOnInit(): void {
-    // Mevcut dili al
     const savedLang = localStorage.getItem('app-language') || 'tr';
     this.translate.use(savedLang);
     this.currentLang = savedLang;
@@ -42,7 +43,6 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  // Dil değiştirme fonksiyonu
   switchLanguage(lang: string): void {
     this.translate.use(lang);
     this.currentLang = lang;
@@ -71,6 +71,7 @@ export class LoginComponent implements OnInit {
       finalize(() => this.loading = false)
     ).subscribe({
       next: () => {
+        this.toastService.show('Welcome to Notesy!', 'success'); // Toast
         this.router.navigate(['/notes']);
       },
       error: (error) => {
@@ -78,6 +79,7 @@ export class LoginComponent implements OnInit {
           this.errorMessage = typeof error.error === 'string' 
             ? error.error 
             : text;
+          this.toastService.show(this.errorMessage, 'error'); // Toast
         });
         console.error('Login Component Error:', error);
       }
